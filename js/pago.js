@@ -3,14 +3,17 @@
 // pago.js
 // =========================================================
 
+// BORRA esta línea si existe: const CART_KEY = "geekwave_cart";
+// AGREGA esto al inicio para usar tu nuevo estado centralizado
+import { State } from './state.js'; 
+import { checkSupabaseSession } from './security-utils.js';
 console.log("[Geekwave] Checkout Inicializado");
 
 // =========================================================
 // VARIABLES
 // =========================================================
 
-const CART_KEY = "geekwave_cart";
-const USER_KEY = "geekwave_user_billing";
+
 
 let inventario = [];
 let currentPayment = "wompi";
@@ -189,20 +192,17 @@ function initContactMethods() {
 // CART
 // =========================================================
 
+// SUSTITUYE TUS FUNCIONES ANTIGUAS POR ESTAS:
 function getCart() {
-
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-
+    return State.getCart(); // Consulta el nuevo state.js
 }
-// En pago.js (y en navbar-global.js)
+
+// Si tienes una función saveCart, reemplázala por:
 function saveCart(cart) {
-    localStorage.setItem("geekwave_cart", JSON.stringify(cart));
-    
-    // Lanzar evento global para que cualquier componente sepa que el carrito cambió
-    window.dispatchEvent(new CustomEvent('cartUpdated', { 
-        detail: { cart: cart } 
-    }));
+    State.saveCart(cart); // Guarda usando el nuevo state.js
 }
+
+
 
 
 function renderCheckoutCart() {
@@ -957,3 +957,4 @@ window.addEventListener('storage', (e) => {
         renderCheckoutCart();
     }
 });
+

@@ -3,43 +3,154 @@
 // pago.js
 // =========================================================
 
-// BORRA esta línea si existe: const CART_KEY = "geekwave_cart";
-// AGREGA esto al inicio para usar tu nuevo estado centralizado
-import { State } from './state.js'; 
-import { checkSupabaseSession } from './security-utils.js';
 console.log("[Geekwave] Checkout Inicializado");
+
+// =========================================================
+// SAFE STATE
+// =========================================================
+
+const State = {
+
+    getCart() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "geekwave_cart"
+                )
+            ) || [];
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "[State] Error leyendo carrito",
+                error
+            );
+
+            return [];
+
+        }
+
+    },
+
+    saveCart(cart) {
+
+        try {
+
+            localStorage.setItem(
+
+                "geekwave_cart",
+
+                JSON.stringify(cart)
+
+            );
+
+            // =============================================
+            // EVENTO GLOBAL
+            // =============================================
+
+            window.dispatchEvent(
+                new Event("cartUpdated")
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "[State] Error guardando carrito",
+                error
+            );
+
+        }
+
+    }
+
+};
+
+// =========================================================
+// SAFE SUPABASE
+// =========================================================
+
+async function checkSupabaseSession() {
+
+    try {
+
+        console.log(
+            "[Supabase] Verificando sesión..."
+        );
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "[Supabase] Error:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
 
 // =========================================================
 // VARIABLES
 // =========================================================
 
-
-
 let inventario = [];
+
 let currentPayment = "wompi";
+
 let couponDiscount = 0;
+
+let hasInteracted = false;
 
 // =========================================================
 // INIT
 // =========================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
 
-    initLucide();
-    initLenis();
-    initAccordion();
-    initPaymentMethods();
-    initContactMethods();
-    initCoupon();
-    initValidation();
-    initSavedData();
+    "DOMContentLoaded",
 
-    await loadInventory();
+    async () => {
 
-    renderCheckoutCart();
-    validateCheckout();
+        console.log(
+            "[Checkout] DOM Ready"
+        );
 
-});
+        initLucide();
+
+        initLenis();
+
+        initAccordion();
+
+        initPaymentMethods();
+
+        initContactMethods();
+
+        initCoupon();
+
+        initValidation();
+
+        initSavedData();
+
+        await loadInventory();
+
+        renderCheckoutCart();
+
+        validateCheckout();
+
+    }
+
+);
 
 // =========================================================
 // LUCIDE
@@ -47,8 +158,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function initLucide() {
 
-    if (window.lucide) {
-        lucide.createIcons();
+    try {
+
+        if (window.lucide) {
+
+            lucide.createIcons();
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "[Lucide] Error:",
+            error
+        );
+
     }
 
 }
@@ -59,20 +185,40 @@ function initLucide() {
 
 function initLenis() {
 
-    if (typeof Lenis !== "undefined") {
+    try {
 
-        const lenis = new Lenis({
-            duration: 1.3,
-            smoothWheel: true,
-            lerp: 0.08
-        });
+        if (typeof Lenis !== "undefined") {
 
-        function raf(time) {
-            lenis.raf(time);
+            const lenis = new Lenis({
+
+                duration: 1.3,
+
+                smoothWheel: true,
+
+                lerp: 0.08
+
+            });
+
+            function raf(time) {
+
+                lenis.raf(time);
+
+                requestAnimationFrame(raf);
+
+            }
+
             requestAnimationFrame(raf);
+
         }
 
-        requestAnimationFrame(raf);
+    }
+
+    catch (error) {
+
+        console.error(
+            "[Lenis] Error:",
+            error
+        );
 
     }
 
@@ -86,19 +232,38 @@ async function loadInventory() {
 
     try {
 
-        const response = await fetch("./json/inventario.json");
+        const response =
+            await fetch(
+                "./json/inventario.json"
+            );
 
         if (!response.ok) {
-            throw new Error("No se pudo cargar inventario");
+
+            throw new Error(
+                "No se pudo cargar inventario"
+            );
+
         }
 
-        inventario = await response.json();
+        inventario =
+            await response.json();
 
-        console.log("[Geekwave] Inventario cargado");
+        console.log(
 
-    } catch (error) {
+            "[Checkout] Inventario:",
 
-        console.error(error);
+            inventario.length
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "[Checkout] Error inventario:",
+            error
+        );
 
     }
 
@@ -110,35 +275,92 @@ async function loadInventory() {
 
 function initAccordion() {
 
-    const toggles = document.querySelectorAll(".step-toggle");
+    const toggles =
+        document.querySelectorAll(
+            ".step-toggle"
+        );
 
     toggles.forEach(toggle => {
 
-        toggle.addEventListener("click", () => {
+        toggle.addEventListener(
+            "click",
+            () => {
 
-            const target = toggle.dataset.step;
-            toggleAccordion(target);
+                const target =
+                    toggle.dataset.step;
 
-        });
+                toggleAccordion(target);
+
+            }
+        );
 
     });
 
 }
 
+// =========================================================
+// GLOBAL ACCORDION
+// =========================================================
+
 window.toggleAccordion = function(stepId) {
 
-    const target = document.getElementById(stepId);
+    console.log(
+        "[Accordion]",
+        stepId
+    );
 
-    if (!target) return;
+    const target =
+        document.getElementById(stepId);
 
-    const isActive = target.classList.contains("active");
+    if (!target) {
 
-    document.querySelectorAll(".checkout-step")
-        .forEach(step => step.classList.remove("active"));
+        console.error(
+            "[Accordion] Step no encontrado:",
+            stepId
+        );
 
-    if (!isActive) {
-        target.classList.add("active");
+        return;
+
     }
+
+    // =====================================================
+    // VALIDAR SHIPPING
+    // =====================================================
+
+    if (
+
+        stepId === "step-payment" &&
+        !isShippingFormValid()
+
+    ) {
+
+        showToast(
+            "Completa primero tus datos"
+        );
+
+        return;
+
+    }
+
+    // =====================================================
+    // RESET
+    // =====================================================
+
+    document
+        .querySelectorAll(".checkout-step")
+        .forEach(step => {
+
+            step.classList.remove("active");
+
+        });
+
+    // =====================================================
+    // OPEN
+    // =====================================================
+
+    target.classList.add("active");
+
+    validateCheckout();
 
 };
 
@@ -148,19 +370,44 @@ window.toggleAccordion = function(stepId) {
 
 function initPaymentMethods() {
 
-    const methods = document.querySelectorAll(".payment-method");
+    const methods =
+        document.querySelectorAll(
+            ".payment-method"
+        );
 
     methods.forEach(method => {
 
-        method.addEventListener("click", () => {
+        method.addEventListener(
+            "click",
+            () => {
 
-            methods.forEach(m => m.classList.remove("active"));
+                methods.forEach(m => {
 
-            method.classList.add("active");
+                    m.classList.remove(
+                        "active"
+                    );
 
-            currentPayment = method.dataset.payment;
+                });
 
-        });
+                method.classList.add(
+                    "active"
+                );
+
+                currentPayment =
+                    method.dataset.payment;
+
+                console.log(
+
+                    "[Checkout] Método:",
+
+                    currentPayment
+
+                );
+
+                validateCheckout();
+
+            }
+        );
 
     });
 
@@ -172,17 +419,31 @@ function initPaymentMethods() {
 
 function initContactMethods() {
 
-    const methods = document.querySelectorAll(".contact-method");
+    const methods =
+        document.querySelectorAll(
+            ".contact-method"
+        );
 
     methods.forEach(method => {
 
-        method.addEventListener("click", () => {
+        method.addEventListener(
+            "click",
+            () => {
 
-            methods.forEach(m => m.classList.remove("active"));
+                methods.forEach(m => {
 
-            method.classList.add("active");
+                    m.classList.remove(
+                        "active"
+                    );
 
-        });
+                });
+
+                method.classList.add(
+                    "active"
+                );
+
+            }
+        );
 
     });
 
@@ -192,88 +453,137 @@ function initContactMethods() {
 // CART
 // =========================================================
 
-// SUSTITUYE TUS FUNCIONES ANTIGUAS POR ESTAS:
 function getCart() {
-    return State.getCart(); // Consulta el nuevo state.js
+
+    return State.getCart();
+
 }
 
-// Si tienes una función saveCart, reemplázala por:
 function saveCart(cart) {
-    State.saveCart(cart); // Guarda usando el nuevo state.js
+
+    State.saveCart(cart);
+
 }
 
-
-
+// =========================================================
+// RENDER CART
+// =========================================================
 
 function renderCheckoutCart() {
 
-    const container = document.getElementById("checkout-products");
+    const container =
+        document.getElementById(
+            "checkout-products"
+        );
 
     if (!container) return;
 
     const cart = getCart();
 
+    // =====================================================
+    // EMPTY
+    // =====================================================
+
     if (cart.length === 0) {
 
         container.innerHTML = `
+
             <div class="checkout-empty">
-                <h3>Tu carrito está vacío</h3>
-                <p>Agrega productos antes de continuar.</p>
+
+                <h3>
+                    Tu carrito está vacío
+                </h3>
+
+                <p>
+                    Agrega productos antes de continuar.
+                </p>
+
             </div>
+
         `;
 
         updateTotals(0);
+
+        validateCheckout();
 
         return;
 
     }
 
+    // =====================================================
+    // PRODUCTS
+    // =====================================================
+
     let subtotal = 0;
 
     container.innerHTML = cart.map(item => {
 
-        const product = inventario.find(
-            p => parseInt(p.id) === parseInt(item.id)
-        );
+        const product =
+            inventario.find(
+                p =>
+                    parseInt(p.id) ===
+                    parseInt(item.id)
+            );
 
         if (!product) return "";
 
-        const quantity = item.qty || 1;
-        const total = product.precio_usd * quantity;
+        const quantity =
+            item.qty || 1;
+
+        const total =
+            product.precio_usd * quantity;
 
         subtotal += total;
 
         return `
+
             <article class="checkout-product">
-                
+
                 <div class="checkout-product-image">
-                    <img src="${product.imagen}" alt="${product.nombre}">
+
+                    <img
+                        src="${product.imagen}"
+                        alt="${product.nombre}"
+                    >
+
                 </div>
 
                 <div class="checkout-product-info">
 
                     <div class="checkout-product-top">
-                        <h4>${product.nombre}</h4>
 
-                        <button 
+                        <h4>
+                            ${product.nombre}
+                        </h4>
+
+                        <button
                             class="remove-product-btn"
                             onclick="removeFromCart(${item.id})"
                         >
+
                             <i data-lucide="x"></i>
+
                         </button>
+
                     </div>
 
                     <div class="checkout-product-bottom">
 
                         <div class="checkout-qty">
 
-                            <button onclick="changeQty(${item.id}, -1)">
+                            <button
+                                onclick="changeQty(${item.id}, -1)"
+                            >
                                 -
                             </button>
 
-                            <span>${quantity}</span>
+                            <span>
+                                ${quantity}
+                            </span>
 
-                            <button onclick="changeQty(${item.id}, 1)">
+                            <button
+                                onclick="changeQty(${item.id}, 1)"
+                            >
                                 +
                             </button>
 
@@ -288,6 +598,7 @@ function renderCheckoutCart() {
                 </div>
 
             </article>
+
         `;
 
     }).join("");
@@ -296,7 +607,10 @@ function renderCheckoutCart() {
 
     initLucide();
 
+    validateCheckout();
+
 }
+
 
 // =========================================================
 // QTY
@@ -307,7 +621,9 @@ window.changeQty = function(id, delta) {
     let cart = getCart();
 
     const item = cart.find(
-        item => parseInt(item.id) === parseInt(id)
+        item =>
+            parseInt(item.id) ===
+            parseInt(id)
     );
 
     if (!item) return;
@@ -317,12 +633,16 @@ window.changeQty = function(id, delta) {
     if (item.qty <= 0) {
 
         cart = cart.filter(
-            i => parseInt(i.id) !== parseInt(id)
+            i =>
+                parseInt(i.id) !==
+                parseInt(id)
         );
 
     }
 
     saveCart(cart);
+
+    renderCheckoutCart();
 
 };
 
@@ -331,10 +651,14 @@ window.removeFromCart = function(id) {
     let cart = getCart();
 
     cart = cart.filter(
-        item => parseInt(item.id) !== parseInt(id)
+        item =>
+            parseInt(item.id) !==
+            parseInt(id)
     );
 
     saveCart(cart);
+
+    renderCheckoutCart();
 
 };
 
@@ -344,43 +668,135 @@ window.removeFromCart = function(id) {
 
 function updateTotals(subtotal) {
 
-    const discount = subtotal * couponDiscount;
+    const discount =
+        subtotal * couponDiscount;
 
-    const finalTotal = subtotal - discount;
+    const finalTotal =
+        subtotal - discount;
 
-    const subtotalEl = document.getElementById("checkout-subtotal");
-    const totalEl = document.getElementById("checkout-total");
-    const discountRow = document.getElementById("discount-row");
-    const discountAmount = document.getElementById("discount-amount");
+    const subtotalEl =
+        document.getElementById(
+            "checkout-subtotal"
+        );
+
+    const totalEl =
+        document.getElementById(
+            "checkout-total"
+        );
+
+    const discountRow =
+        document.getElementById(
+            "discount-row"
+        );
+
+    const discountAmount =
+        document.getElementById(
+            "discount-amount"
+        );
 
     if (subtotalEl) {
-        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+        subtotalEl.textContent =
+            `$${subtotal.toFixed(2)}`;
+
     }
 
     if (totalEl) {
-        totalEl.textContent = `$${finalTotal.toFixed(2)}`;
+
+        totalEl.textContent =
+            `$${finalTotal.toFixed(2)}`;
+
     }
 
     if (discount > 0) {
 
-        discountRow.classList.add("active");
+        discountRow?.classList.add(
+            "active"
+        );
 
-        discountAmount.textContent = `-$${discount.toFixed(2)}`;
+        if (discountAmount) {
 
-    } else {
+            discountAmount.textContent =
+                `-$${discount.toFixed(2)}`;
 
-        discountRow.classList.remove("active");
+        }
 
     }
 
-    const payBtn = document.getElementById("main-pay-btn");
+    else {
+
+        discountRow?.classList.remove(
+            "active"
+        );
+
+    }
+
+    // =====================================================
+    // BUTTON PRICE
+    // =====================================================
+
+    const payBtn =
+        document.getElementById(
+            "main-pay-btn"
+        );
 
     if (payBtn) {
 
-        payBtn.querySelector(".btn-price").textContent =
-            `$${finalTotal.toFixed(2)}`;
+        const price =
+            payBtn.querySelector(
+                ".btn-price"
+            );
+
+        if (price) {
+
+            price.textContent =
+                `$${finalTotal.toFixed(2)}`;
+
+        }
 
     }
+
+}
+
+// =========================================================
+// VALIDATION HELPERS
+// =========================================================
+
+function isShippingFormValid() {
+
+    const name =
+        getValue("checkout-name").trim();
+
+    const email =
+        getValue("checkout-email").trim();
+
+    const city =
+        getValue("checkout-city").trim();
+
+    const phone =
+        getValue("checkout-phone").trim();
+
+    const address =
+        getValue("checkout-address").trim();
+
+    return (
+
+        name.length > 2 &&
+        email.length > 2 &&
+        city.length > 2 &&
+        phone.length > 2 &&
+        address.length > 2
+
+    );
+
+}
+
+function isPaymentMethodSelected() {
+
+    return (
+        currentPayment &&
+        currentPayment !== ""
+    );
 
 }
 
@@ -390,16 +806,36 @@ function updateTotals(subtotal) {
 
 function initValidation() {
 
-    const fields = document.querySelectorAll(".checkout-input");
+    const fields =
+        document.querySelectorAll(
+            ".checkout-input"
+        );
 
     fields.forEach(field => {
 
-        field.addEventListener("input", () => {
+        field.addEventListener(
+            "input",
+            () => {
 
-            validateField(field);
-            validateCheckout();
+                hasInteracted = true;
 
-        });
+                validateField(field);
+
+                validateCheckout();
+
+            }
+        );
+
+        field.addEventListener(
+            "blur",
+            () => {
+
+                validateField(field);
+
+                validateCheckout();
+
+            }
+        );
 
     });
 
@@ -407,61 +843,126 @@ function initValidation() {
 
 function validateField(field) {
 
-    if (field.value.trim().length > 2) {
+    const value =
+        field.value.trim();
 
-        field.classList.add("valid");
-        field.classList.remove("invalid");
-
-    } else {
+    if (
+        !hasInteracted &&
+        value.length === 0
+    ) {
 
         field.classList.remove("valid");
+        field.classList.remove("invalid");
+
+        return;
+
+    }
+
+    if (value.length > 2) {
+
+        field.classList.add("valid");
+
+        field.classList.remove("invalid");
+
+    }
+
+    else {
+
+        field.classList.remove("valid");
+
         field.classList.add("invalid");
 
     }
 
 }
 
+// =========================================================
+// CHECKOUT VALIDATION
+// =========================================================
+
 function validateCheckout() {
-
-    const requiredFields = document.querySelectorAll(
-        ".checkout-input[required]"
-    );
-
-    let valid = true;
-
-    requiredFields.forEach(field => {
-
-        if (field.value.trim() === "") {
-            valid = false;
-        }
-
-    });
 
     const cart = getCart();
 
-    if (cart.length === 0) {
-        valid = false;
+    const shippingValid =
+        isShippingFormValid();
+
+    const paymentSelected =
+        isPaymentMethodSelected();
+
+    const hasProducts =
+        cart.length > 0;
+
+    const canPay =
+
+        shippingValid &&
+        paymentSelected &&
+        hasProducts;
+
+    console.log({
+
+        shippingValid,
+        paymentSelected,
+        hasProducts,
+        canPay
+
+    });
+
+    // =====================================================
+    // CONTINUE BUTTON
+    // =====================================================
+
+    const continueBtn =
+        document.querySelector(
+            ".continue-btn"
+        );
+
+    if (continueBtn) {
+
+        continueBtn.disabled =
+            !shippingValid;
+
+        continueBtn.classList.toggle(
+            "ready",
+            shippingValid
+        );
+
     }
 
-    const button = document.getElementById("main-pay-btn");
+    // =====================================================
+    // PAY BUTTON
+    // =====================================================
 
-    if (!button) return;
+    const payBtn =
+        document.getElementById(
+            "main-pay-btn"
+        );
 
-    if (valid) {
+    if (!payBtn) return;
 
-        button.classList.add("ready");
+    payBtn.disabled = !canPay;
 
-        button.querySelector(".btn-text").textContent =
-            currentPayment === "paypal"
-                ? "Continuar con PayPal"
-                : "Proceder al pago";
+    payBtn.classList.toggle(
+        "ready",
+        canPay
+    );
 
-    } else {
+    const btnText =
+        payBtn.querySelector(
+            ".btn-text"
+        );
 
-        button.classList.remove("ready");
+    if (btnText) {
 
-        button.querySelector(".btn-text").textContent =
-            "Completa tus datos";
+        btnText.textContent = canPay
+
+            ? (
+                currentPayment === "paypal"
+                    ? "Continuar con PayPal"
+                    : "Proceder al pago"
+            )
+
+            : "Completa tus datos";
 
     }
 
@@ -474,30 +975,78 @@ function validateCheckout() {
 function initSavedData() {
 
     const data = JSON.parse(
-        localStorage.getItem(USER_KEY)
+        localStorage.getItem(
+            "USER_KEY"
+        )
     );
 
     if (!data) return;
 
-    setValue("checkout-name", data.name);
-    setValue("checkout-email", data.email);
-    setValue("checkout-city", data.city);
-    setValue("checkout-address", data.address);
-    setValue("checkout-phone", data.phone);
+    setValue(
+        "checkout-name",
+        data.name
+    );
 
-    const remember = document.getElementById("remember-data");
+    setValue(
+        "checkout-email",
+        data.email
+    );
+
+    setValue(
+        "checkout-city",
+        data.city
+    );
+
+    setValue(
+        "checkout-address",
+        data.address
+    );
+
+    setValue(
+        "checkout-phone",
+        data.phone
+    );
+
+    const remember =
+        document.getElementById(
+            "remember-data"
+        );
 
     if (remember) {
+
         remember.checked = true;
+
     }
+
+    setTimeout(() => {
+
+        document
+            .querySelectorAll(
+                ".checkout-input"
+            )
+            .forEach(field => {
+
+                validateField(field);
+
+            });
+
+        validateCheckout();
+
+    }, 100);
 
 }
 
 function saveUserData() {
 
-    const remember = document.getElementById("remember-data");
+    const remember =
+        document.getElementById(
+            "remember-data"
+        );
 
-    if (!remember || !remember.checked) return;
+    if (
+        !remember ||
+        !remember.checked
+    ) return;
 
     const data = {
 
@@ -518,7 +1067,13 @@ function saveUserData() {
 
     };
 
-    localStorage.setItem(USER_KEY, JSON.stringify(data));
+    localStorage.setItem(
+
+        "USER_KEY",
+
+        JSON.stringify(data)
+
+    );
 
 }
 
@@ -528,7 +1083,8 @@ function saveUserData() {
 
 function getValue(id) {
 
-    const el = document.getElementById(id);
+    const el =
+        document.getElementById(id);
 
     return el ? el.value : "";
 
@@ -536,10 +1092,13 @@ function getValue(id) {
 
 function setValue(id, value) {
 
-    const el = document.getElementById(id);
+    const el =
+        document.getElementById(id);
 
     if (el && value) {
+
         el.value = value;
+
     }
 
 }
@@ -550,39 +1109,61 @@ function setValue(id, value) {
 
 function initCoupon() {
 
-    const btn = document.getElementById("apply-coupon-btn");
+    const btn =
+        document.getElementById(
+            "apply-coupon-btn"
+        );
 
     if (!btn) return;
 
-    btn.addEventListener("click", applyCoupon);
+    btn.addEventListener(
+        "click",
+        applyCoupon
+    );
 
 }
 
 function applyCoupon() {
 
-    const input = document.getElementById("coupon-input");
+    const input =
+        document.getElementById(
+            "coupon-input"
+        );
 
     if (!input) return;
 
-    const code = input.value.trim().toUpperCase();
+    const code =
+        input.value
+            .trim()
+            .toUpperCase();
 
     if (code === "GEEK10") {
 
         couponDiscount = 0.10;
 
-        showToast("Cupón aplicado: 10% OFF");
+        showToast(
+            "Cupón aplicado: 10% OFF"
+        );
 
-    } else if (code === "WELCOME") {
+    }
+
+    else if (code === "WELCOME") {
 
         couponDiscount = 0.05;
 
-        showToast("Cupón aplicado: 5% OFF");
+        showToast(
+            "Cupón aplicado: 5% OFF"
+        );
 
-    } else {
+    }
+
+    else {
 
         couponDiscount = 0;
 
-        showToast("Cupón inválido");
+        showToast(
+            "Cupón inválido"
+        );
 
     }
 
@@ -591,63 +1172,107 @@ function applyCoupon() {
 }
 
 // =========================================================
-// PAY
+// PAYMENT
 // =========================================================
-
 window.processPayment = async function() {
 
+    console.log("[Checkout] processPayment");
+
     const button = document.getElementById("main-pay-btn");
+    if (!button) return;
 
-    if (!button.classList.contains("ready")) {
+    // =====================================================
+    // VALIDACIÓN
+    // =====================================================
+    const cart = getCart();
+    const shippingValid = isShippingFormValid();
+    const paymentSelected = isPaymentMethodSelected();
+    const hasProducts = cart.length > 0;
+    const canPay = shippingValid && paymentSelected && hasProducts;
 
-        toggleAccordion("step-shipping");
-
+    if (!canPay) {
         showToast("Completa todos los campos");
-
+        validateCheckout();
         return;
-
     }
 
-    saveUserData();
+    // =====================================================
+    // EVITAR DOBLE CLICK
+    // =====================================================
+    if (button.classList.contains("loading")) return;
 
+    // =====================================================
+    // LOADING UI
+    // =====================================================
+    button.classList.add("loading");
+    button.style.pointerEvents = "none";
+    saveUserData();
     showOverlay();
 
     try {
+        // =================================================
+        // SESSION
+        // =================================================
+        await checkSupabaseSession();
 
+        // =================================================
+        // DELAY UX
+        // =================================================
         await fakePaymentDelay();
 
+        // =================================================
+        // PAYPAL
+        // =================================================
         if (currentPayment === "paypal") {
+            console.log("[Checkout] Redirect PayPal");
+            hideOverlay();
+            button.classList.remove("loading");
+            button.style.pointerEvents = "";
 
-            console.log("Procesar PayPal");
-
-        } else {
-
-            console.log("Procesar Wompi");
-
+            setTimeout(() => {
+                window.location.href = "https://www.paypal.com";
+            }, 300);
         }
 
         // =================================================
-        // AQUÍ CONECTAS TU NETLIFY FUNCTION
+        // WOMPI (INTEGRACIÓN DINÁMICA)
         // =================================================
+        else {
+            console.log("[Checkout] Iniciando Wompi API");
 
-        setTimeout(() => {
+            const email = getValue("checkout-email"); // Usando tu helper existente
+            const totalText = document.getElementById("checkout-total").textContent;
+            const amount = parseFloat(totalText.replace('$', '').replace(',', ''));
 
-            hideOverlay();
+            const res = await fetch('/.netlify/functions/process-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, amount })
+            });
 
-            showToast("Pago procesado correctamente");
+            const data = await res.json();
 
-        }, 1000);
+            if (!res.ok) {
+                throw new Error(data.message || "Error en pasarela Wompi");
+            }
 
-    } catch (error) {
-
-        console.error(error);
-
+            if (data.urlPagoWompi) {
+                console.log("[Checkout] Redirigiendo a Wompi:", data.urlPagoWompi);
+                window.location.href = data.urlPagoWompi;
+                // No ocultamos el overlay aquí para evitar parpadeos visuales antes del cambio de página
+            } else {
+                throw new Error("No se recibió URL de pago");
+            }
+        }
+    } 
+    catch (error) {
+        console.error("[Checkout] Error:", error);
         hideOverlay();
-
-        showToast("Error procesando pago");
-
+        button.classList.remove("loading");
+        button.style.pointerEvents = "";
+        validateCheckout();
+        showToast("Error procesando pago: " + error.message);
     }
-
 };
 
 // =========================================================
@@ -658,7 +1283,7 @@ function fakePaymentDelay() {
 
     return new Promise(resolve => {
 
-        setTimeout(resolve, 2000);
+        setTimeout(resolve, 1800);
 
     });
 
@@ -670,21 +1295,37 @@ function fakePaymentDelay() {
 
 function showOverlay() {
 
-    const overlay = document.getElementById("payment-overlay");
+    const overlay =
+        document.getElementById(
+            "payment-overlay"
+        );
 
-    if (overlay) {
-        overlay.classList.add("active");
-    }
+    if (!overlay) return;
+
+    overlay.classList.add(
+        "active"
+    );
+
+    overlay.style.pointerEvents =
+        "auto";
 
 }
 
 function hideOverlay() {
 
-    const overlay = document.getElementById("payment-overlay");
+    const overlay =
+        document.getElementById(
+            "payment-overlay"
+        );
 
-    if (overlay) {
-        overlay.classList.remove("active");
-    }
+    if (!overlay) return;
+
+    overlay.classList.remove(
+        "active"
+    );
+
+    overlay.style.pointerEvents =
+        "none";
 
 }
 
@@ -694,15 +1335,22 @@ function hideOverlay() {
 
 function showToast(message) {
 
-    let toast = document.querySelector(".geekwave-toast");
+    let toast =
+        document.querySelector(
+            ".geekwave-toast"
+        );
 
     if (!toast) {
 
-        toast = document.createElement("div");
+        toast =
+            document.createElement("div");
 
-        toast.className = "geekwave-toast";
+        toast.className =
+            "geekwave-toast";
 
-        document.body.appendChild(toast);
+        document.body.appendChild(
+            toast
+        );
 
     }
 
@@ -712,195 +1360,60 @@ function showToast(message) {
 
     setTimeout(() => {
 
-        toast.classList.remove("show");
+        toast.classList.remove(
+            "show"
+        );
 
     }, 3000);
 
 }
 
 // =========================================================
-// NAVBAR CART SYNC
+// CART EVENTS
 // =========================================================
 
-function syncNavbarCart() {
+window.addEventListener(
 
-    const cart = getCart();
+    "cartUpdated",
 
-    const totalItems = cart.reduce(
-        (acc, item) => acc + item.qty,
-        0
-    );
+    () => {
 
-    const badge = document.getElementById("cartBadge");
+        console.log(
+            "[Checkout] Cart Updated"
+        );
 
-    if (!badge) return;
-
-    if (totalItems > 0) {
-
-        badge.textContent = totalItems;
-        badge.classList.add("show");
-
-    } else {
-
-        badge.classList.remove("show");
+        renderCheckoutCart();
 
     }
 
-}
+);
+
+window.addEventListener(
+
+    "storage",
+
+    (e) => {
+
+        if (
+            e.key === "geekwave_cart"
+        ) {
+
+            renderCheckoutCart();
+
+        }
+
+    }
+
+);
 
 // =========================================================
-// EMPTY STATE STYLE
+// EXTRA STYLES
 // =========================================================
 
-const style = document.createElement("style");
+const style =
+document.createElement("style");
 
 style.innerHTML = `
-
-.checkout-empty {
-
-    padding: 4rem 2rem;
-    text-align: center;
-
-}
-
-.checkout-empty h3 {
-
-    font-family: "Space Grotesk", sans-serif;
-    margin-bottom: 1rem;
-
-}
-
-.checkout-empty p {
-
-    color: rgba(255,255,255,0.5);
-
-}
-
-.checkout-product {
-
-    display: flex;
-    gap: 1rem;
-
-    padding: 1rem;
-
-    border-radius: 24px;
-
-    background: rgba(255,255,255,0.03);
-
-    border: 1px solid rgba(255,255,255,0.06);
-
-    margin-bottom: 1rem;
-
-}
-
-.checkout-product-image {
-
-    width: 90px;
-    height: 90px;
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    flex-shrink: 0;
-
-}
-
-.checkout-product-image img {
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-}
-
-.checkout-product-info {
-
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-}
-
-.checkout-product-top {
-
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-
-}
-
-.checkout-product-top h4 {
-
-    margin: 0;
-
-    font-family: "Space Grotesk", sans-serif;
-
-    font-size: 1rem;
-
-    line-height: 1.4;
-
-}
-
-.remove-product-btn {
-
-    width: 36px;
-    height: 36px;
-
-    border-radius: 12px;
-
-    border: none;
-
-    background: rgba(255,255,255,0.05);
-
-    color: rgba(255,255,255,0.7);
-
-    cursor: pointer;
-
-}
-
-.checkout-product-bottom {
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-}
-
-.checkout-qty {
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 0.5rem 0.8rem;
-
-    border-radius: 999px;
-
-    background: rgba(255,255,255,0.04);
-
-}
-
-.checkout-qty button {
-
-    width: 28px;
-    height: 28px;
-
-    border-radius: 50%;
-
-    border: none;
-
-    background: rgba(255,255,255,0.08);
-
-    color: white;
-
-    cursor: pointer;
-
-}
 
 .geekwave-toast {
 
@@ -909,22 +1422,23 @@ style.innerHTML = `
     bottom: 30px;
     right: 30px;
 
-    background: #00ff7f;
-    color: black;
+    z-index: 999999;
 
     padding: 1rem 1.4rem;
 
     border-radius: 18px;
 
-    font-weight: 800;
+    background: #00ff7f;
 
-    z-index: 999999;
+    color: black;
+
+    font-weight: 800;
 
     opacity: 0;
 
     transform: translateY(20px);
 
-    transition: all 0.35s ease;
+    transition: all .35s ease;
 
 }
 
@@ -936,25 +1450,22 @@ style.innerHTML = `
 
 }
 
+.main-pay-btn.loading {
+
+    opacity: .7;
+
+    transform: scale(.98);
+
+}
+
 `;
 
 document.head.appendChild(style);
 
+// =========================================================
+// READY
+// =========================================================
 
-// ESCUCHAR CAMBIOS DEL CARRITO PARA ACTUALIZAR PAGO.HTML AUTOMÁTICAMENTE
-
-// Ouve as alterações feitas pelo navbar
-window.addEventListener('cartUpdated', () => {
-    console.log("Recebi atualização do navbar, redesenhando...");
-    if (typeof renderCheckoutCart === 'function') {
-        renderCheckoutCart();
-    }
-});
-
-// Garante que o evento também funcione em abas diferentes
-window.addEventListener('storage', (e) => {
-    if (e.key === 'geekwave_cart') {
-        renderCheckoutCart();
-    }
-});
-
+console.log(
+    "[Checkout] pago.js listo"
+);

@@ -1,6 +1,6 @@
 /**
  * SECURITY UTILITIES
- * Funciones de seguridad para prevenir XSS, sanitización y manejo seguro de datos
+ * Funciones de seguridad para prevenir XSS, sanitizacin y manejo seguro de datos
  */
 
 // ==================== XSS PREVENTION ====================
@@ -23,7 +23,7 @@ function escapeHtml(text) {
 }
 
 /**
- * Valida que una cadena sea un email válido
+ * Valida que una cadena sea un email vlido
  * @param {string} email - Email a validar
  * @returns {boolean}
  */
@@ -33,18 +33,18 @@ function isValidEmail(email) {
 }
 
 /**
- * Valida que una cadena sea un teléfono válido (formato básico)
- * @param {string} phone - Teléfono a validar
+ * Valida que una cadena sea un telfono vlido (formato bsico)
+ * @param {string} phone - Telfono a validar
  * @returns {boolean}
  */
 function isValidPhone(phone) {
-    // Acepta números, espacios, guiones, + y paréntesis
+    // Acepta nmeros, espacios, guiones, + y parntesis
     const regex = /^[\d\s\-\+\(\)]{7,}$/;
     return regex.test(String(phone).trim());
 }
 
 /**
- * Valida que un número sea un monto válido (USD)
+ * Valida que un nmero sea un monto vlido (USD)
  * @param {any} amount - Monto a validar
  * @returns {boolean}
  */
@@ -60,14 +60,14 @@ function isValidAmount(amount) {
  * @returns {boolean}
  */
 function validateCartAmount(submittedAmount, cart) {
-    // ⚠️ IMPORTANTE: Esta es una validación FRONTAL.
-    // El backend DEBE hacer la validación real con los precios de la BD.
+    //  IMPORTANTE: Esta es una validacin FRONTAL.
+    // El backend DEBE hacer la validacin real con los precios de la BD.
     if (!Array.isArray(cart)) return false;
     
     let total = 0;
     cart.forEach(item => {
-        // ⚠️ Estos precios son del localStorage (no confiables)
-        // Solo para validación básica de formato
+        //  Estos precios son del localStorage (no confiables)
+        // Solo para validacin bsica de formato
         total += (parseFloat(item.price) || 0) * (parseInt(item.qty) || 0);
     });
     
@@ -78,8 +78,8 @@ function validateCartAmount(submittedAmount, cart) {
 
 /**
  * Guarda datos en localStorage de forma SEGURA
- * ⚠️ SOLO para datos NO SENSIBLES: carrito, filtros, preferencias
- * NUNCA para: emails, teléfonos, direcciones, datos personales
+ *  SOLO para datos NO SENSIBLES: carrito, filtros, preferencias
+ * NUNCA para: emails, telfonos, direcciones, datos personales
  * 
  * @param {string} key - Clave
  * @param {any} value - Valor (se convierte a JSON)
@@ -103,7 +103,7 @@ function safeLocalStorageSet(key, value, ttlMinutes = null) {
  * Valida que no hayan expirado (si tienen TTL)
  * 
  * @param {string} key - Clave
- * @returns {any} Valor o null si expiró/no existe
+ * @returns {any} Valor o null si expir/no existe
  */
 function safeLocalStorageGet(key) {
     try {
@@ -127,7 +127,7 @@ function safeLocalStorageGet(key) {
 
 /**
  * Limpia localStorage de forma SEGURA
- * CRÍTICO: Llamar cuando el usuario cierra sesión o se va del sitio
+ * CRTICO: Llamar cuando el usuario cierra sesin o se va del sitio
  * 
  * @param {array} keysToKeep - Claves que NO se deben eliminar (ej: ['geekwave_cart'])
  */
@@ -151,7 +151,7 @@ function clearSensitiveData(keysToKeep = []) {
 // ==================== SESSION MANAGEMENT ====================
 
 /**
- * Indica si el usuario tiene una sesión activa
+ * Indica si el usuario tiene una sesin activa
  * @returns {boolean}
  */
 function isUserLoggedIn() {
@@ -159,7 +159,7 @@ function isUserLoggedIn() {
 }
 
 /**
- * Limpia la sesión del usuario
+ * Limpia la sesin del usuario
  * Se debe llamar en logout
  */
 function clearUserSession() {
@@ -187,18 +187,18 @@ function validateFormData(formData, requiredFields = []) {
             return;
         }
         
-        // Validación específica por tipo de campo
+        // Validacin especfica por tipo de campo
         if (field.includes('email')) {
             if (!isValidEmail(value)) {
-                errors[field] = 'Email inválido';
+                errors[field] = 'Email invlido';
             }
         } else if (field.includes('phone') || field.includes('telefono')) {
             if (!isValidPhone(value)) {
-                errors[field] = 'Teléfono inválido';
+                errors[field] = 'Telfono invlido';
             }
         } else if (field.includes('amount') || field.includes('precio')) {
             if (!isValidAmount(value)) {
-                errors[field] = 'Monto inválido';
+                errors[field] = 'Monto invlido';
             }
         }
     });
@@ -237,7 +237,7 @@ function sanitizeFormData(data) {
 
 /**
  * Realiza un fetch POST seguro al backend
- * Incluye validación y manejo de errores
+ * Incluye validacin y manejo de errores
  * 
  * @param {string} endpoint - URL del endpoint
  * @param {object} data - Datos a enviar
@@ -248,7 +248,7 @@ async function secureApiFetch(endpoint, data = {}, options = {}) {
     try {
         // Validar que el endpoint sea seguro (no contiene caracteres maliciosos)
         if (!/^[\w\/.?&=-]*$/.test(endpoint)) {
-            throw new Error('Endpoint inválido');
+            throw new Error('Endpoint invlido');
         }
         
         // Sanitizar datos
@@ -270,10 +270,10 @@ async function secureApiFetch(endpoint, data = {}, options = {}) {
             throw new Error(`API Error: ${response.status}`);
         }
         
-        // Validar que la respuesta sea JSON válido
+        // Validar que la respuesta sea JSON vlido
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Respuesta inválida del servidor');
+            throw new Error('Respuesta invlida del servidor');
         }
         
         return await response.json();
@@ -286,13 +286,13 @@ async function secureApiFetch(endpoint, data = {}, options = {}) {
 // ==================== EVENT LISTENERS WITH SECURITY ====================
 
 /**
- * Limpia datos sensibles cuando el usuario cierra la pestaña/navegador
- * Se ejecuta automáticamente al cargar este script
+ * Limpia datos sensibles cuando el usuario cierra la pestaa/navegador
+ * Se ejecuta automticamente al cargar este script
  */
 function setupSecurityCleanup() {
-    // Limpiar al cerrar sesión
+    // Limpiar al cerrar sesin
     window.addEventListener('beforeunload', () => {
-        // NOTA: No limpiamos el carrito, pero sí datos personales
+        // NOTA: No limpiamos el carrito, pero s datos personales
         clearSensitiveData(['geekwave_cart']);
     });
     
@@ -313,7 +313,7 @@ function setupSecurityCleanup() {
     });
 }
 
-// Ejecutar automáticamente
+// Ejecutar automticamente
 setupSecurityCleanup();
 
 /**
@@ -321,12 +321,12 @@ setupSecurityCleanup();
  * ========================
  * Este archivo previene XSS y otros ataques COMUNES en el frontend.
  * 
- * ⚠️ NUNCA CONFÍES SOLO EN LA VALIDACIÓN FRONTEND
+ *  NUNCA CONFES SOLO EN LA VALIDACIN FRONTEND
  * 
  * EL BACKEND DEBE:
  * 1. Validar TODOS los datos nuevamente
  * 2. Verificar cantidades contra la base de datos
- * 3. Validar sesión/tokens
+ * 3. Validar sesin/tokens
  * 4. Verificar permiso de usuario
  * 5. Usar HTTPS obligatorio
  * 6. Implementar rate limiting

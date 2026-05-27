@@ -80,7 +80,7 @@ async function checkSupabaseSession() {
     try {
 
         console.log(
-            "[Supabase] Verificando sesión..."
+            "[Supabase] Verificando sesin..."
         );
 
         return true;
@@ -398,7 +398,7 @@ function initPaymentMethods() {
 
                 console.log(
 
-                    "[Checkout] Método:",
+                    "[Checkout] Mtodo:",
 
                     currentPayment
 
@@ -491,7 +491,7 @@ function renderCheckoutCart() {
             <div class="checkout-empty">
 
                 <h3>
-                    Tu carrito está vacío
+                    Tu carrito est vaco
                 </h3>
 
                 <p>
@@ -1142,7 +1142,7 @@ function applyCoupon() {
         couponDiscount = 0.10;
 
         showToast(
-            "Cupón aplicado: 10% OFF"
+            "Cupn aplicado: 10% OFF"
         );
 
     }
@@ -1152,7 +1152,7 @@ function applyCoupon() {
         couponDiscount = 0.05;
 
         showToast(
-            "Cupón aplicado: 5% OFF"
+            "Cupn aplicado: 5% OFF"
         );
 
     }
@@ -1162,7 +1162,7 @@ function applyCoupon() {
         couponDiscount = 0;
 
         showToast(
-            "Cupón inválido"
+            "Cupn invlido"
         );
 
     }
@@ -1182,7 +1182,7 @@ window.processPayment = async function() {
     if (!button) return;
 
     // =====================================================
-    // VALIDACIÓN
+    // VALIDACIN
     // =====================================================
     const cart = getCart();
     const shippingValid = isShippingFormValid();
@@ -1235,7 +1235,7 @@ window.processPayment = async function() {
         }
 
         // =================================================
-        // WOMPI (INTEGRACIÓN DINÁMICA)
+        // WOMPI (INTEGRACIN DINMICA)
         // =================================================
         else {
             console.log("[Checkout] Iniciando Wompi API");
@@ -1259,9 +1259,9 @@ window.processPayment = async function() {
             if (data.urlPagoWompi) {
                 console.log("[Checkout] Redirigiendo a Wompi:", data.urlPagoWompi);
                 window.location.href = data.urlPagoWompi;
-                // No ocultamos el overlay aquí para evitar parpadeos visuales antes del cambio de página
+                // No ocultamos el overlay aqu para evitar parpadeos visuales antes del cambio de pgina
             } else {
-                throw new Error("No se recibió URL de pago");
+                throw new Error("No se recibi URL de pago");
             }
         }
     } 

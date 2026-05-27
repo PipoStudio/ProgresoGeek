@@ -1,10 +1,10 @@
 // netlify/functions/notificar-premio.js
-const axios = require('axios'); // Asegúrate de haber instalado axios en tu carpeta /functions
+const axios = require('axios'); // Asegrate de haber instalado axios en tu carpeta /functions
 
 exports.handler = async (event) => {
     const { email, tipoRacha } = JSON.parse(event.body);
     
-    // Aquí defines qué grupo de MailerLite recibe a cada racha
+    // Aqu defines qu grupo de MailerLite recibe a cada racha
     const grupos = {
         'RACHA_7': 'ID_GRUPO_7_DIAS',
         'RACHA_15': 'ID_GRUPO_15_DIAS',
@@ -19,5 +19,5 @@ exports.handler = async (event) => {
         headers: { 'Authorization': `Bearer ${process.env.MAILERLITE_API_KEY}` }
     });
 
-    return { statusCode: 200, body: "Notificación enviada" };
+    return { statusCode: 200, body: "Notificacin enviada" };
 };

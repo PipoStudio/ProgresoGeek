@@ -4,7 +4,7 @@
 
 window.INVENTARIO = [];
 
-// Función única para cargar inventario
+// Funcin nica para cargar inventario
 async function cargarInventario() {
     try {
         const res = await fetch('json/inventario.json');
@@ -27,17 +27,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             const resultados = window.INVENTARIO.filter(p =>
                 p.nombre.toLowerCase().includes(valor)
             );
-            console.log("🔎 Resultados:", resultados);
+            console.log(" Resultados:", resultados);
         });
     }
 
-    // 3. MENÚ PRODUCTOS
+    // 3. MEN PRODUCTOS
     const menuBtn = document.querySelector(".menu-productos");
     const menu = document.querySelector(".dropdown-productos");
     if (menuBtn) {
         menuBtn.addEventListener("click", () => {
             if (menu) menu.classList.toggle("active");
-            console.log("🛍 Catálogo:", window.INVENTARIO);
+            console.log(" Catlogo:", window.INVENTARIO);
         });
     }
 
@@ -49,13 +49,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         user.addEventListener("mouseleave", () => panel.style.display = "none");
     }
 
-    // 5. LINKS EN CONSTRUCCIÓN (Corrección del 'or' por '||')
+    // 5. LINKS EN CONSTRUCCIN (Correccin del 'or' por '||')
     document.querySelectorAll("a").forEach(link => {
         const href = link.getAttribute("href");
         if (href === "#" || href === "") {
             link.addEventListener("click", (e) => {
                 e.preventDefault();
-                alert("Estamos trabajando en esta sección 🚧");
+                alert("Estamos trabajando en esta seccin ");
             });
         }
     });

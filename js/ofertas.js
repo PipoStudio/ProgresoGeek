@@ -258,7 +258,7 @@ function handleAddToCart(e) {
     updateNavbarCart();
 
     showNotification(
-        `${productName} añadido al carrito`,
+        `${productName} aadido al carrito`,
         "success"
     );
 
@@ -384,7 +384,7 @@ function handleNewsletterSubmit(e) {
     if (!email) {
 
         showNotification(
-            "Ingresa un correo válido.",
+            "Ingresa un correo vlido.",
             "error"
         );
 

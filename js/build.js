@@ -6,7 +6,7 @@ const htmlContent = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analogue Pocket | Detalle de Ingeniería | Geekwave</title>
+    <title>Analogue Pocket | Detalle de Ingeniera | Geekwave</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;700&family=Space+Grotesk:wght@400;700;800&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@ const htmlContent = `<!DOCTYPE html>
                 <a href="#" id="productosBtn">Productos <i data-lucide="chevron-down" style="width: 14px; vertical-align: middle;"></i></a>
                 <div class="mega-menu" id="productosMenu">
                     <div class="menu-container">
-                        <div class="menu-col" id="col-categories"><span class="menu-label">Categoría</span><ul class="menu-list" id="list-categories"></ul></div>
+                        <div class="menu-col" id="col-categories"><span class="menu-label">Categora</span><ul class="menu-list" id="list-categories"></ul></div>
                         <div class="menu-col hidden" id="col-subcategories"><span class="menu-label">Plataforma</span><ul class="menu-list" id="list-subcategories"></ul></div>
                         <div class="menu-col hidden" id="col-products"><span class="menu-label">Productos</span><ul class="menu-list" id="list-products"></ul></div>
                     </div>
@@ -66,12 +66,12 @@ const htmlContent = `<!DOCTYPE html>
                     <div class="plan active" data-plan="standard"><h4>BASE</h4><div class="price">$219.99</div></div>
                     <div class="plan" data-plan="bundle"><h4>BUNDLE</h4><div class="price">$299.99</div></div>
                 </div>
-                <button class="cart-btn" id="cartButton">AÑADIR AL CARRITO</button>
+                <button class="cart-btn" id="cartButton">AADIR AL CARRITO</button>
             </div>
         </div>
     </section>
 
-    <!-- SECCIÓN DE SUGERENCIAS -->
+    <!-- SECCIN DE SUGERENCIAS -->
     <section class="suggestions-container">
         <h2 class="suggestions-title">Productos Complementarios</h2>
         <div class="suggestions-grid">
@@ -100,7 +100,7 @@ const htmlContent = `<!DOCTYPE html>
 </body>
 </html>`;
 
-// --- 2. CSS: Integración de Estilos de Geekwave ---
+// --- 2. CSS: Integracin de Estilos de Geekwave ---
 const cssContent = `
 :root {
     --bg-main: #050505; --card-bg: #111111; --text-main: #ffffff;

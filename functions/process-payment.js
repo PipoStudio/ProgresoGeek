@@ -2,20 +2,20 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-// 1. Cargamos el inventario en la función
+// 1. Cargamos el inventario en la funcin
 const inventario = JSON.parse(fs.readFileSync(path.join(__dirname, '../json/inventario.json'), 'utf-8'));
 
 exports.handler = async (event) => {
-    // ... (Mantén tus headers y lógica de OPTIONS igual)
+    // ... (Mantn tus headers y lgica de OPTIONS igual)
 
     try {
         const { email, items } = JSON.parse(event.body || "{}"); // Recibimos el carrito
 
         if (!email || !items || !Array.isArray(items)) {
-            throw new Error("Datos inválidos");
+            throw new Error("Datos invlidos");
         }
 
-        // 2. Cálculo matemático SEGURO en el servidor
+        // 2. Clculo matemtico SEGURO en el servidor
         let subtotal = 0;
         items.forEach(item => {
             const producto = inventario.find(p => p.id === item.id);
@@ -24,12 +24,12 @@ exports.handler = async (event) => {
             }
         });
 
-        // 3. Aplicar lógica de costos y margen fijo
-        const tasaFija = 0.50; // Ejemplo: $0.50 por gestión
+        // 3. Aplicar lgica de costos y margen fijo
+        const tasaFija = 0.50; // Ejemplo: $0.50 por gestin
         const margenMinimo = 5.00; // Margen de ganancia obligatorio
         const finalAmount = subtotal + tasaFija + margenMinimo;
 
-        // ... (Ahora procedes con la lógica de OAUTH y llamada a Wompi usando 'finalAmount')
+        // ... (Ahora procedes con la lgica de OAUTH y llamada a Wompi usando 'finalAmount')
         // ...
     } catch (error) {
         // ... (Manejo de errores)

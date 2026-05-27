@@ -57,7 +57,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
 }
 
 /* =========================================
-   2. NAVEGACIÓN Y COMPONENTES (COPIA EXACTA)
+   2. NAVEGACIN Y COMPONENTES (COPIA EXACTA)
    ========================================= */
 .navbar {
     position: fixed; top: 0; left: 0; width: 100%; height: 50px;
@@ -95,7 +95,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
 .cart-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
 /* =========================================
-   3. ESTRUCTURA EDITORIAL (ENCABEZADOS Y TÍTULOS)
+   3. ESTRUCTURA EDITORIAL (ENCABEZADOS Y TTULOS)
    ========================================= */
 .products-page {
     width: 90%;
@@ -141,7 +141,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     margin-top: 39px;
 }
 
-/* Subcategorías y Descripciones de Grupos - Restaurado */
+/* Subcategoras y Descripciones de Grupos - Restaurado */
 .subcategory-title {
     font-family: var(--font-heading);
     font-size: 1.5rem;
@@ -269,7 +269,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
 
 .footer-logo { font-family: var(--font-heading); font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 800; color: var(--text-main); line-height: 1; }
 .footer-tagline { font-size: 1rem; color: var(--text-muted); max-width: 85%; font-weight: 500; line-height: 1.6; }
-/* --- REPARACIÓN DE BOTÓN Y ALINEACIÓN --- */
+/* --- REPARACIN DE BOTN Y ALINEACIN --- */
 
 .btn-outline {
     font-family: var(--font-heading);
@@ -283,8 +283,8 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     text-align: center;
     display: block;
     
-    /* Esta es la clave: hace que el botón crezca para ocupar 
-       el espacio sobrante al lado del círculo del carrito */
+    /* Esta es la clave: hace que el botn crezca para ocupar 
+       el espacio sobrante al lado del crculo del carrito */
     flex: 1; 
 }
 
@@ -298,7 +298,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px; /* Espacio de separación entre el botón y el carrito */
+    gap: 12px; /* Espacio de separacin entre el botn y el carrito */
     width: 100%;
 }
 
@@ -311,12 +311,12 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; /* Evita que el círculo se aplaste si el botón es largo */
+    flex-shrink: 0; /* Evita que el crculo se aplaste si el botn es largo */
 }
 
-/* --- ICONO DE CORAZÓN (WISHLIST) --- */
+/* --- ICONO DE CORAZN (WISHLIST) --- */
 .card-img-wrapper {
-    position: relative; /* Obligatorio para que el corazón se alinee dentro de este cuadro */
+    position: relative; /* Obligatorio para que el corazn se alinee dentro de este cuadro */
 }
 
 .wishlist-btn {
@@ -325,7 +325,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     right: 15px;
     width: 35px;
     height: 35px;
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro traslúcido para que resalte */
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro traslcido para que resalte */
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
@@ -345,7 +345,7 @@ button { cursor: pointer; background: none; border: none; color: inherit; }
     transform: scale(1.1);
 }
 
-/* Estado cuando el corazón está "activado" (si usas JS después) */
+/* Estado cuando el corazn est "activado" (si usas JS despus) */
 .wishlist-btn.active {
     color: #ff4d4d;
     background: #ffffff;

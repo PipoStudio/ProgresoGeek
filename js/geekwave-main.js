@@ -1,10 +1,10 @@
 /**
- * GEEKWAVE MAIN - Lógica central de carrito y sincronización
+ * GEEKWAVE MAIN - Lgica central de carrito y sincronizacin
  */
 
-console.log("[Geekwave] Lógica de Carrito Conectada");
+console.log("[Geekwave] Lgica de Carrito Conectada");
 
-// --- 1. Sincronización de UI ---
+// --- 1. Sincronizacin de UI ---
 function syncGeekwaveCart() {
     const cart = JSON.parse(localStorage.getItem('geekwave_cart')) || [];
     const saveBtn = document.getElementById('saveCartBtn');
@@ -14,7 +14,7 @@ function syncGeekwaveCart() {
     // Renderizado de lista (si el contenedor existe)
     if (itemsContainer) {
         if (cart.length === 0) {
-            itemsContainer.innerHTML = '<p style="text-align:center;">Tu carrito está vacío</p>';
+            itemsContainer.innerHTML = '<p style="text-align:center;">Tu carrito est vaco</p>';
         } else {
             itemsContainer.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
@@ -25,7 +25,7 @@ function syncGeekwaveCart() {
         }
     }
 
-    // Lógica de estados de botones (sin deformar el diseño)
+    // Lgica de estados de botones (sin deformar el diseo)
     if (saveBtn) {
         saveBtn.disabled = (cart.length === 0);
         saveBtn.textContent = (cart.length === 0) ? 'No, gracias' : 'Guardar';
@@ -39,21 +39,21 @@ function syncGeekwaveCart() {
     }
 }
 
-// --- 2. Lógica de Agregar al Carrito ---
+// --- 2. Lgica de Agregar al Carrito ---
 window.addToCart = (id, name, price) => {
     let cart = JSON.parse(localStorage.getItem('geekwave_cart')) || [];
     cart.push({ id, name, price: parseFloat(price) });
     localStorage.setItem('geekwave_cart', JSON.stringify(cart));
     
-    console.log(`✅ Producto ${name} agregado ($${price})`);
+    console.log(` Producto ${name} agregado ($${price})`);
     syncGeekwaveCart();
 };
 
-// --- 3. Vinculación de eventos a botones HTML ---
+// --- 3. Vinculacin de eventos a botones HTML ---
 function bindCartEvents() {
     const botones = document.querySelectorAll('.btn-comprar');
     botones.forEach(btn => {
-        // Usamos una función anónima para evitar problemas con 'this'
+        // Usamos una funcin annima para evitar problemas con 'this'
         btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
             const name = btn.getAttribute('data-name');
@@ -63,16 +63,16 @@ function bindCartEvents() {
     });
 }
 
-// --- 4. Inicialización (Escucha al cargador de componentes) ---
+// --- 4. Inicializacin (Escucha al cargador de componentes) ---
 document.addEventListener('navbarLoaded', () => {
-    console.log("🚀 Geekwave Main: Navbar listo, sincronizando...");
+    console.log(" Geekwave Main: Navbar listo, sincronizando...");
     syncGeekwaveCart();
     bindCartEvents();
 });
 
 window.addEventListener('storage', syncGeekwaveCart);
 
-// --- 5. Lógica de Juegos ---
+// --- 5. Lgica de Juegos ---
 async function registrarPartidaDiaria() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;

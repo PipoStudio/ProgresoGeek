@@ -115,7 +115,7 @@ export async function reportarJugada(supabase) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     
-    // Llamada a tu función SQL en Supabase
+    // Llamada a tu funcin SQL en Supabase
     const { data, error } = await supabase
       .rpc('registrar_partida_y_actualizar_racha', { user_id_param: user.id });
       

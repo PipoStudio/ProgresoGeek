@@ -1,6 +1,3 @@
-/* =========================================================
-   GEEKWAVE CONTACT PAGE
-   ========================================================= */
 
 /* =========================================================
    DOM READY
@@ -158,7 +155,7 @@ function handleSubmit(e) {
     console.log("[Geekwave Contact Form]", payload);
 
     /* =====================================================
-       VALIDACIÓN SIMPLE
+       VALIDACIN SIMPLE
     ===================================================== */
 
     if (
@@ -187,8 +184,8 @@ function handleSubmit(e) {
     `;
 
     /* =====================================================
-       SIMULACIÓN ENVÍO
-       (Aquí conectarás tu backend/API)
+       SIMULACIN ENVO
+       (Aqu conectar Bkend/API)
     ===================================================== */
 
     setTimeout(() => {

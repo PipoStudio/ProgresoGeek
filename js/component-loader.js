@@ -1,8 +1,8 @@
 /**
- * COMPONENT LOADER - Sistema dinámico de carga de componentes
+ * COMPONENT LOADER - Sistema dinmico de carga de componentes
  * ============================================================
- * Responsabilidad: Cargar Navbar y Footer mediante fetch + inyección en DOM
- * Sincronización: Dispara eventos personalizados para que otros scripts esperen
+ * Responsabilidad: Cargar Navbar y Footer mediante fetch + inyeccin en DOM
+ * Sincronizacin: Dispara eventos personalizados para que otros scripts esperen
  */
 
 class ComponentLoader {
@@ -25,7 +25,7 @@ class ComponentLoader {
             }
             return await response.text();
         } catch (error) {
-            console.error(`❌ Error cargando componente: ${path}`, error);
+            console.error(`Error cargando componente: ${path}`, error);
             return null;
         }
     }
@@ -36,7 +36,7 @@ class ComponentLoader {
     injectComponent(containerId, html) {
         const container = document.getElementById(containerId);
         if (!container) {
-            console.warn(`⚠️ Container no encontrado: ${containerId}`);
+            console.warn(`Container no encontrado: ${containerId}`);
             return false;
         }
         
@@ -48,18 +48,18 @@ class ComponentLoader {
     }
 
     /**
-     * Renderiza iconos Lucide (con retry si no está disponible)
+     * Renderiza iconos Lucide (con retry si no est disponible)
      */
     renderLucideIcons(retries = 3) {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
             return true;
         } else if (retries > 0) {
-            // Reintentar si lucide no está disponible aún
+            // Reintentar si lucide no est disponible an
             setTimeout(() => this.renderLucideIcons(retries - 1), 100);
             return false;
         }
-        console.warn('⚠️ Lucide no disponible después de intentos');
+        console.warn(' Lucide no disponible despus de intentos');
         return false;
     }
 
@@ -73,14 +73,14 @@ class ComponentLoader {
             cancelable: true 
         });
         document.dispatchEvent(event);
-        console.log(`📡 Evento disparado: ${eventName}`);
+        console.log(` Evento disparado: ${eventName}`);
     }
 
     /**
-     * Método principal: Carga todos los componentes
+     * Mtodo principal: Carga todos los componentes
      */
     async loadAll() {
-        console.log('🔄 Iniciando carga de componentes...');
+        console.log(' Iniciando carga de componentes...');
 
         // Cargar Navbar y Footer en paralelo
         const [navbarHtml, footerHtml] = await Promise.all([
@@ -92,7 +92,7 @@ class ComponentLoader {
         if (navbarHtml) {
             this.injectComponent('nav-placeholder', navbarHtml);
             this.componentsLoaded.navbar = true;
-            console.log('✅ Navbar inyectado');
+            console.log(' Navbar inyectado');
         }
 
         // Inyectar Footer (si el contenedor existe)
@@ -100,14 +100,14 @@ class ComponentLoader {
             if (footerHtml) {
                 this.injectComponent('footer-placeholder', footerHtml);
                 this.componentsLoaded.footer = true;
-                console.log('✅ Footer inyectado');
+                console.log(' Footer inyectado');
             }
         }
 
-        // Renderizar Lucide después de inyectar
+        // Renderizar Lucide despus de inyectar
         this.renderLucideIcons();
 
-        // Disparar evento de finalización
+        // Disparar evento de finalizacin
         this.dispatchComponentEvent('navbarLoaded', {
             navbar: this.componentsLoaded.navbar,
             footer: this.componentsLoaded.footer,
@@ -118,12 +118,12 @@ class ComponentLoader {
     }
 }
 
-// ===== INICIALIZACIÓN =====
+// ===== INICIALIZACIN =====
 // Se ejecuta en el momento adecuado del ciclo de vida del DOM
 function initializeComponentLoader() {
     const loader = new ComponentLoader();
 
-    // Ejecutar apenas sea posible (DOMContentLoaded o inmediatamente si ya pasó)
+    // Ejecutar apenas sea posible (DOMContentLoaded o inmediatamente si ya pas)
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => loader.loadAll());
     } else {

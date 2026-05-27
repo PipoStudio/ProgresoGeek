@@ -1,5 +1,5 @@
 /**
- * NAVBAR GLOBAL - Lógica centralizada del navbar
+ * NAVBAR GLOBAL - Lgica centralizada del navbar
  * =============================================
  * Espera al evento 'navbarLoaded' del component-loader
  * para activar todos los event listeners
@@ -11,21 +11,21 @@ document.addEventListener('navbarLoaded', initializeNavbarLogic, { once: true })
 // Fallback: Si navbarLoaded no se dispara en 3 segundos, inicializar de todas formas
 setTimeout(() => {
     if (!window.__navbarInitialized) {
-        console.warn('⚠️ navbarLoaded no se disparó, inicializando por fallback...');
+        console.warn(' navbarLoaded no se dispar, inicializando por fallback...');
         initializeNavbarLogic();
     }
 }, 3000);
 
 /**
- * FUNCIÓN PRINCIPAL: Inicializa toda la lógica del navbar
+ * FUNCIN PRINCIPAL: Inicializa toda la lgica del navbar
  */
 function initializeNavbarLogic() {
-    if (window.__navbarInitialized) return; // Evitar ejecución duplicada
+    if (window.__navbarInitialized) return; // Evitar ejecucin duplicada
     window.__navbarInitialized = true;
 
-    console.log('✅ Inicializando lógica del navbar...');
+    console.log(' Inicializando lgica del navbar...');
 
-    // ===== INICIALIZACIÓN DE DEPENDENCIAS GLOBALES =====
+    // ===== INICIALIZACIN DE DEPENDENCIAS GLOBALES =====
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
@@ -79,10 +79,10 @@ function initializeNavbarLogic() {
         const badgeU = document.getElementById('userBadge');
         const tooltipU = document.getElementById('userTooltip');
 
-        // Verificar si el usuario está logueado
+        // Verificar si el usuario est logueado
         const isLoggedIn = localStorage.getItem('sb-kuvrszdgljonaxihmkzj-auth-token') !== null;
 
-        // 1. Semáforo del Carrito
+        // 1. Semforo del Carrito
         if (badgeC) {
             if (totalItems > 0) {
                 badgeC.textContent = totalItems;
@@ -92,7 +92,7 @@ function initializeNavbarLogic() {
             }
         }
 
-        // 2. Semáforo del Usuario
+        // 2. Semforo del Usuario
         if (badgeU) {
             if (isLoggedIn) {
                 badgeU.className = 'user-badge show green';
@@ -128,7 +128,7 @@ function initializeNavbarLogic() {
     } else {
         cart.push({ id: id, nombre: nombre, qty: parseInt(qty) });
     }
-    // A linha mágica: salva E avisa ao pago.js que algo mudou
+    // A linha mgica: salva E avisa ao pago.js que algo mudou
     localStorage.setItem('geekwave_cart', JSON.stringify(cart));
     window.dispatchEvent(new Event('cartUpdated')); 
     
@@ -169,7 +169,7 @@ window.removeFromCart = function (id) {
                 cartItemsContainer.innerHTML = `
                 <div style="text-align: center; color: var(--text-muted); padding: 40px 20px; font-size: 0.9rem;">
                     <i data-lucide="shopping-cart" style="width: 40px; height: 40px; margin-bottom: 15px; opacity: 0.2;"></i>
-                    <br>Tu carrito está vacío.
+                    <br>Tu carrito est vaco.
                 </div>`;
             }
             if (checkoutBtn) {
@@ -255,11 +255,11 @@ window.removeFromCart = function (id) {
         .then(response => response.json())
         .then(data => {
             inventario = data;
-            console.log('✅ Inventario cargado:', inventario.length, 'productos');
+            console.log(' Inventario cargado:', inventario.length, 'productos');
         })
-        .catch(error => console.error('❌ Error cargando inventario:', error));
+        .catch(error => console.error(' Error cargando inventario:', error));
 
-    // ===== LÓGICA DEL MEGA MENÚ =====
+    // ===== LGICA DEL MEGA MEN =====
     let currentMenuCol = 0;
     let currentMenuIdx = [0, 0, 0];
 
@@ -441,7 +441,7 @@ window.removeFromCart = function (id) {
         }
     });
 
-    // ===== FILTROS DE BÚSQUEDA =====
+    // ===== FILTROS DE BSQUEDA =====
     const filterCategory = document.getElementById('filterCategory');
     const filterPrice = document.getElementById('filterPrice');
     const filterSort = document.getElementById('filterSort');
@@ -491,7 +491,7 @@ window.removeFromCart = function (id) {
         });
     }
 
-    // ===== BÚSQUEDAS RECIENTES =====
+    // ===== BSQUEDAS RECIENTES =====
     function getRecentSearches() {
         const stored = localStorage.getItem('recentSearches');
         return stored ? JSON.parse(stored) : [];
@@ -521,7 +521,7 @@ window.removeFromCart = function (id) {
             searchResults.classList.remove('active');
             return;
         }
-        searchResults.innerHTML = '<div class="recent-header">Búsquedas recientes</div>';
+        searchResults.innerHTML = '<div class="recent-header">Bsquedas recientes</div>';
         recents.forEach(term => {
             searchResults.insertAdjacentHTML(
                 'beforeend',
@@ -623,7 +623,7 @@ window.removeFromCart = function (id) {
                 if (filterSort.value === 'az') matches.sort((a, b) => a.nombre.localeCompare(b.nombre));
                 else if (filterSort.value === 'priceAsc') matches.sort((a, b) => a.precio_usd - b.precio_usd);
                 else if (filterSort.value === 'priceDesc') matches.sort((a, b) => b.precio_usd - a.precio_usd);
-                else if (filterSort.value === 'newest') matches.sort((a, b) => (b.año || 0) - (a.año || 0));
+                else if (filterSort.value === 'newest') matches.sort((a, b) => (b.ao || 0) - (a.ao || 0));
                 else {
                     matches.sort((a, b) => {
                         let indexA = a.nombre.toLowerCase().indexOf(query);
@@ -726,13 +726,13 @@ window.removeFromCart = function (id) {
         currentFocus = -1;
     }
 
-    console.log('✅ Navbar completamente inicializado y listo');
+    console.log(' Navbar completamente inicializado y listo');
 }
 // En pago.js (y en navbar-global.js)
 function saveCart(cart) {
     localStorage.setItem("geekwave_cart", JSON.stringify(cart));
     
-    // Lanzar evento global para que cualquier componente sepa que el carrito cambió
+    // Lanzar evento global para que cualquier componente sepa que el carrito cambi
     window.dispatchEvent(new CustomEvent('cartUpdated', { 
         detail: { cart: cart } 
     }));
@@ -747,7 +747,7 @@ window.addEventListener('cartUpdated', (e) => {
 function saveCart(cart) {
     localStorage.setItem('geekwave_cart', JSON.stringify(cart));
     
-    // Dispara esto para la misma pestaña
+    // Dispara esto para la misma pestaa
     window.dispatchEvent(new CustomEvent('cartUpdated')); 
 }
 

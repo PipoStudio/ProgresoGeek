@@ -1,12 +1,12 @@
 // app.js COMPLETAMENTE ADAPTADO Y CORREGIDO PARA GEEKWAVE
 
-// --- 1. CONFIGURACIÓN DE SUPABASE (REQUERIDO) ---
+// --- 1. CONFIGURACIN DE SUPABASE (REQUERIDO) ---
 const SUPABASE_URL = 'https://kuvrszdgljonaxihmkzj.supabase.co'; 
 const SUPABASE_ANON_KEY = 'sb_publishable_0dIRyTasJsycA3N6gx-VqQ_5Ua79uil'; 
 
 const supabaseApp = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
 
-// --- 2. GESTIÓN DE LA UI (SPA) ---
+// --- 2. GESTIN DE LA UI (SPA) ---
 const views = {
     login: document.getElementById('signin-card'),
     register: document.getElementById('signup-card'),
@@ -39,7 +39,7 @@ function showView(viewName) {
     
     if (mainContainer) mainContainer.classList.remove('dashboard-mode');
 
-    // Ocultar subtítulo global si estamos en dashboard
+    // Ocultar subttulo global si estamos en dashboard
     const subTitle = document.getElementById('global-subtitle');
     if (subTitle) {
         subTitle.style.display = (viewName === 'dashboard') ? 'none' : 'block';
@@ -72,17 +72,17 @@ function handleVerificationSuccess() {
     currentRegisteringEmail = null;
     isVerifyingOTP = false; 
     
-    // EL CEREBRO DE REDIRECCIÓN: Busca si guardamos de dónde venía el usuario
+    // EL CEREBRO DE REDIRECCIN: Busca si guardamos de dnde vena el usuario
     const returnUrl = localStorage.getItem('geekwave_redirect_url') || 'index.html';
     
-    // Limpiamos la memoria para evitar que se quede pegada en el próximo inicio
+    // Limpiamos la memoria para evitar que se quede pegada en el prximo inicio
     localStorage.removeItem('geekwave_redirect_url'); 
     
-    // Envía al usuario exactamente de dónde venía (ej: pago.html) o al index por defecto
+    // Enva al usuario exactamente de dnde vena (ej: pago.html) o al index por defecto
     window.location.href = returnUrl; 
 }
 
-// --- 4. INICIALIZACIÓN Y NAVEGACIÓN SPA ---
+// --- 4. INICIALIZACIN Y NAVEGACIN SPA ---
 const toSignupBtn = document.getElementById('to-signup');
 const toSigninBtn = document.getElementById('to-signin');
 
@@ -132,13 +132,13 @@ window.addEventListener('DOMContentLoaded', async () => {
         const { data: { session } } = await supabaseApp.auth.getSession();
         
         if (!session) {
-            // Si NO hay sesión, mostramos el login normal
+            // Si NO hay sesin, mostramos el login normal
             if(window.location.hash.includes('error=') || window.location.search.includes('error=')) {
-                showError("El enlace de confirmación ha expirado o es inválido.");
+                showError("El enlace de confirmacin ha expirado o es invlido.");
             }
             showView('login'); 
         } else {
-            // Si YA ESTÁ logueado al entrar a esta página desde el navbar, 
+            // Si YA EST logueado al entrar a esta pgina desde el navbar, 
             // mostramos su panel de perfil en lugar de rebotarlo.
             const userDisplay = document.getElementById('user-display');
             if (userDisplay) userDisplay.innerText = session.user.email; 
@@ -146,11 +146,11 @@ window.addEventListener('DOMContentLoaded', async () => {
             showView('dashboard'); 
         }
     } catch (e) {
-        console.error("Error al obtener sesión inicial:", e);
+        console.error("Error al obtener sesin inicial:", e);
     }
 });
 
-// --- 5. LÓGICA DE FORMULARIOS (FLUJOS DE AUTH) ---
+// --- 5. LGICA DE FORMULARIOS (FLUJOS DE AUTH) ---
 
 if (signupForm) {
     signupForm.addEventListener('submit', async (e) => {
@@ -186,18 +186,18 @@ if (signupForm) {
                 }
             });
 
-            // ESTO NOS DIRÁ QUÉ ESTÁ RESPONDIENDO SUPABASE REALMENTE
+            // ESTO NOS DIR QU EST RESPONDIENDO SUPABASE REALMENTE
             console.log("Respuesta cruda de Supabase:", response);
 
             const { data, error } = response;
             if (error) throw error; 
 
-            //  2. GESTIÓN DE RESPUESTA
+            //  2. GESTIN DE RESPUESTA
             
             // CASO A: Detecta si el correo ya existe
             if (data?.user?.identities && data.user.identities.length === 0) {
                 showView('login'); 
-                showError("Este correo ya está registrado. Inicia sesión para acceder.");
+                showError("Este correo ya est registrado. Inicia sesin para acceder.");
                 return;
             }
 
@@ -221,15 +221,15 @@ if (signupForm) {
             
             const errorMsg = error?.message || "";
             
-            // 🧠 CEREBRO AMIGABLE: Traducimos errores técnicos a lenguaje de usuario
+            //  CEREBRO AMIGABLE: Traducimos errores tcnicos a lenguaje de usuario
             // Este bloque atrapa tanto el error de email duplicado como el de nombre de usuario tomado
             if (errorMsg.includes("already registered") || errorMsg.includes("already exists")) {
                 showView('login'); 
-                showError("Este correo ya está registrado. Inicia sesión para acceder.");
+                showError("Este correo ya est registrado. Inicia sesin para acceder.");
             } 
             else if (errorMsg.includes("Database error saving new user") || errorMsg.includes("unique constraint")) {
-                // Aquí capturamos el error técnico de la base de datos y lo hacemos legible
-                showError("¡Ups! Ese nombre de usuario ya está en uso. Prueba con otro.");
+                // Aqu capturamos el error tcnico de la base de datos y lo hacemos legible
+                showError("Ups! Ese nombre de usuario ya est en uso. Prueba con otro.");
             } 
             else {
                 showError("No pudimos crear tu cuenta ahora mismo. Por favor, intenta de nuevo en unos segundos.");
@@ -254,7 +254,7 @@ if (verifyForm) {
         if (!currentRegisteringEmail) return showError("Fallo en el flujo: email no encontrado en memoria.");
         
         if (!code || code.length !== 6) {
-            const msg = "Ingresa los 6 dígitos.";
+            const msg = "Ingresa los 6 dgitos.";
             if (otpError) {
                 otpError.innerText = msg;
                 otpError.style.display = 'block';
@@ -287,7 +287,7 @@ if (verifyForm) {
 
         } catch (error) {
             isVerifyingOTP = false;
-            const msg = "Código incorrecto: " + error.message;
+            const msg = "Cdigo incorrecto: " + error.message;
             
             if (otpError) {
                 otpError.innerText = msg;
@@ -328,12 +328,12 @@ if (signinForm) {
             
             if (error) {
                 if (error.message.includes("Invalid login credentials")) {
-                    throw new Error("Correo o contraseña incorrectos. ¿Ya tienes cuenta?"); 
+                    throw new Error("Correo o contrasea incorrectos. Ya tienes cuenta?"); 
                 }
                 throw error;
             }
 
-            // CAMBIO APLICADO: EJECUTA LA REDIRECCIÓN INTELIGENTE AQUÍ TRAS LOGIN MANUAL EXITOSO
+            // CAMBIO APLICADO: EJECUTA LA REDIRECCIN INTELIGENTE AQU TRAS LOGIN MANUAL EXITOSO
             handleVerificationSuccess();
 
         } catch (error) {
@@ -363,13 +363,13 @@ if (usernameInput) {
 
         // Consultamos a Supabase si el usuario existe
         const { data } = await supabaseApp
-            .from('profiles') // Asegúrate que tu tabla se llame 'profiles'
+            .from('profiles') // Asegrate que tu tabla se llame 'profiles'
             .select('username')
             .eq('username', username)
             .single();
 
         if (data) {
-            showError("Ese nombre de usuario ya está tomado.");
+            showError("Ese nombre de usuario ya est tomado.");
         }
     });
 }

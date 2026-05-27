@@ -31,12 +31,12 @@
     color: #fff;
     display: flex;
     flex-direction: column;
-    font-family: 'Press Start 2P', monospace; /* Manteniendo cohesión con la fuente del juego */
+    font-family: 'Press Start 2P', monospace; /* Manteniendo cohesin con la fuente del juego */
 }
 
-/* Estilos del botón de regreso */
+/* Estilos del botn de regreso */
 .btn-return {
-    margin-top: auto; /* Empuja el botón hacia la parte inferior del aside */
+    margin-top: auto; /* Empuja el botn hacia la parte inferior del aside */
     display: block;
     text-align: center;
     background: transparent;

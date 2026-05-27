@@ -70,7 +70,7 @@ const wompiBody = {
     configuracion: {
         emailsNotificacion: email,
         urlRetorno: "https://geekwave.netlify.app/",
-        urlRedirect: "https://geekwave.netlify.app/", // <--- Agrega esta línea
+        urlRedirect: "https://geekwave.netlify.app/", // <--- Agrega esta lnea
         esMontoEditable: false,
         esCantidadEditable: false,
         notificarTransaccionCliente: true 
@@ -79,7 +79,7 @@ const wompiBody = {
         cantidadMaximaPagosExitosos: 1
     }
 };
-        console.log("📦 Body REAL enviado a Wompi:", JSON.stringify(wompiBody));
+        console.log(" Body REAL enviado a Wompi:", JSON.stringify(wompiBody));
 
         // =========================
         // 4. REQUEST
@@ -95,10 +95,10 @@ const wompiBody = {
             }
         );
 
-        console.log("✅ Respuesta Wompi:", res.data);
+        console.log(" Respuesta Wompi:", res.data);
 
         if (!res.data || !res.data.urlEnlace) {
-            throw new Error("No se recibió URL de pago");
+            throw new Error("No se recibi URL de pago");
         }
 
         return {
@@ -112,7 +112,7 @@ const wompiBody = {
     } catch (error) {
         const errorData = error.response ? error.response.data : error.message;
 
-        console.error("❌ Error definitivo:", errorData);
+        console.error(" Error definitivo:", errorData);
 
         return {
             statusCode: 400,

@@ -293,7 +293,7 @@ function initializeSearch() {
 function handleSearchFocus() {
 
     showNotification(
-        "Próximamente: búsqueda inteligente de soporte.",
+        "Prximamente: bsqueda inteligente de soporte.",
         "info"
     );
 
@@ -310,7 +310,7 @@ function handleSearchEnter(e) {
     e.preventDefault();
 
     showNotification(
-        "La búsqueda avanzada estará disponible pronto.",
+        "La bsqueda avanzada estar disponible pronto.",
         "info"
     );
 
@@ -351,7 +351,7 @@ function handleSupportAction(e) {
         ?.textContent;
 
     showNotification(
-        `${title} próximamente disponible.`,
+        `${title} prximamente disponible.`,
         "success"
     );
 

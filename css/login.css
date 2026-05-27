@@ -204,7 +204,7 @@ body {
   min-width: 480px;
   background: #090909;
 
-  /* --- AQUÍ ESTÁ LA MAGIA --- */
+  /* --- AQU EST LA MAGIA --- */
   display: flex;
   flex-direction: column;  /* Apila todo verticalmente de arriba a abajo */
   align-items: center;     /* Centra los elementos horizontalmente */
@@ -215,7 +215,7 @@ body {
   padding: 40px 0; /* Un poco de respiro en los bordes */
 }
 
-/* Añade esta pequeña regla justo debajo para que el Logo y el Subtítulo 
+/* Aade esta pequea regla justo debajo para que el Logo y el Subttulo 
    tengan el mismo ancho que los formularios y se vean perfectamente alineados */
 .top-brand, .form-subtitle {
   width: 100%;
@@ -241,7 +241,7 @@ body {
   width: 100%;
   max-width: 470px;
   
-  /* Redución del padding superior a 10px para eliminar el gran vacío */
+  /* Reducin del padding superior a 10px para eliminar el gran vaco */
   padding: 10px 42px 30px;
 }
 /* =========================================
@@ -653,7 +653,7 @@ body {
 
 
 /* =========================================
-   SPA LOGIC (CONTROL DE VISTAS DE AUTENTICACIÓN)
+   SPA LOGIC (CONTROL DE VISTAS DE AUTENTICACIN)
 ========================================= */
 
 /* 1. Ocultar todas las tarjetas (formularios) por defecto */
@@ -664,11 +664,11 @@ body {
 /* 2. Mostrar SOLO la tarjeta que el JS marque como 'active' */
 .auth-card.active {
   display: block;
-  /* Animación suave para que la entrada se vea profesional */
+  /* Animacin suave para que la entrada se vea profesional */
   animation: fadeSlideIn 0.4s ease forwards;
 }
 
-/* 3. Animación de entrada (Aparece y sube ligeramente) */
+/* 3. Animacin de entrada (Aparece y sube ligeramente) */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
@@ -684,7 +684,7 @@ body {
    AJUSTES EXTRA PARA LAS NUEVAS VISTAS
 ========================================= */
 
-/* Estilos específicos para la vista de OTP (Check Email) */
+/* Estilos especficos para la vista de OTP (Check Email) */
 .otp-header-visual {
   font-size: 3rem;
   margin-bottom: 1rem;
@@ -697,7 +697,7 @@ body {
   font-weight: 700;
 }
 
-/* Estilos para el botón de logout en el Dashboard */
+/* Estilos para el botn de logout en el Dashboard */
 .social-btn-logout {
   justify-content: center;
   width: auto;
@@ -717,7 +717,7 @@ body {
 
 
 /* =========================================
-   SPA LOGIC (SÓLO AÑADE ESTO AL FINAL DE TU CSS ORIGINAL)
+   SPA LOGIC (SLO AADE ESTO AL FINAL DE TU CSS ORIGINAL)
 ========================================= */
 
 .auth-card {

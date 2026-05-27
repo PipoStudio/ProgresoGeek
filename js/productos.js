@@ -1,6 +1,6 @@
 /**
- * Solo catálogo: animaciones de sección, sliders horizontales e iconos.
- * Navbar, carrito y búsqueda: js/navbar-global.js (alineado con index.html).
+ * Solo catlogo: animaciones de seccin, sliders horizontales e iconos.
+ * Navbar, carrito y bsqueda: js/navbar-global.js (alineado con index.html).
  */
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();

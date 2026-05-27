@@ -29,7 +29,7 @@ export default class extends Phaser.Scene {
     
     this.gameOver = config.sheepCurrent === config.sheepTotal;
     
-    // --- LÓGICA DE VALIDACIÓN 15 SEGUNDOS ---
+    // --- LGICA DE VALIDACIN 15 SEGUNDOS ---
     if (this.gameOver) {
       console.log("Juego terminado. Validando tiempo de juego...");
       const duracionPartida = Math.floor(((new Date()) - config.gameStat.started)/1000);
@@ -37,7 +37,7 @@ export default class extends Phaser.Scene {
       if (duracionPartida >= 15) {
         this.registrarRachaDeUsuario();
       } else {
-        console.log("Partida demasiado corta para registrar racha (duró " + duracionPartida + "s)");
+        console.log("Partida demasiado corta para registrar racha (dur " + duracionPartida + "s)");
       }
       this.duration = duracionPartida;
     } else {
@@ -132,12 +132,12 @@ export default class extends Phaser.Scene {
     }
   }
 
-  // ... (Tus otros métodos: changeMuteState, selectLevelDifficult, startTour, openMenu siguen igual) ...
+  // ... (Tus otros mtodos: changeMuteState, selectLevelDifficult, startTour, openMenu siguen igual) ...
 
   async registrarRachaDeUsuario() {
     try {
       if (typeof window.supabase === 'undefined') {
-          console.warn("El cliente global de Supabase no está definido.");
+          console.warn("El cliente global de Supabase no est definido.");
           return;
       }
 
@@ -153,10 +153,10 @@ export default class extends Phaser.Scene {
           return;
         }
         
-        // Actualización de la UI
+        // Actualizacin de la UI
         if (data && data[0]) {
            const streakEl = document.getElementById('streak-counter');
-           if (streakEl) streakEl.innerText = data[0].racha_final + " días";
+           if (streakEl) streakEl.innerText = data[0].racha_final + " das";
            
            if (data[0].enviar_correo_tipo !== 'NINGUNO') {
              await fetch('https://kuvrszdgljonaxihmkzj.supabase.co/functions/v1/enviar-correo-racha', {
@@ -171,7 +171,7 @@ export default class extends Phaser.Scene {
         }
       }
     } catch (err) {
-      console.error("Error crítico al intentar registrar la racha:", err);
+      console.error("Error crtico al intentar registrar la racha:", err);
     }
   }
 }

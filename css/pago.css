@@ -1,5 +1,5 @@
 /* =========================================================
-   GEEKWAVE CHECKOUT — DARK PREMIUM
+   GEEKWAVE CHECKOUT  DARK PREMIUM
    pago.css
 ========================================================= */
 
@@ -1215,8 +1215,8 @@ body {
 
 }
 #checkout-products {
-    max-height: 400px; /* Ajusta este valor al tamaño de 3 productos */
-    overflow-y: auto;  /* Esto crea el "túnel" de scroll automático */
+    max-height: 400px; /* Ajusta este valor al tamao de 3 productos */
+    overflow-y: auto;  /* Esto crea el "tnel" de scroll automtico */
     padding-right: 10px; /* Para que el scroll no tape el contenido */
     margin-bottom: 20px;
 }

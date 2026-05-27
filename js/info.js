@@ -1,35 +1,35 @@
 /* =========================================
-   LÓGICA DE DETALLES: ANALOGUE POCKET (RECURSOS CDN)
+   LGICA DE DETALLES: ANALOGUE POCKET (RECURSOS CDN)
    ========================================= */
 
 const productData = {
   flavors: {
     black: {
       name: "Chasis Black",
-      icon: "⬛",
+      icon: "",
       // Imagen Frontal Principal
       main: "https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp",
-      // Galería completa del modelo Black
+      // Galera completa del modelo Black
       gallery: [
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp", // Frontal
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401873/geekwave_catalog/hkh80zcxx5hci35cxxhm.webp", // Posterior
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/cq6hbuxovqkfm3zuwnfn.webp"  // Superior
       ],
-      description: "El estándar de ingeniería. Un acabado negro mate texturizado que evoca la estética clásica, albergando el sistema FPGA dual capaz de replicar ciclos de hardware con precisión absoluta."
+      description: "El estndar de ingeniera. Un acabado negro mate texturizado que evoca la esttica clsica, albergando el sistema FPGA dual capaz de replicar ciclos de hardware con precisin absoluta."
     },
     white: {
       name: "Chasis White",
-      icon: "⬜",
+      icon: "",
       // Imagen Frontal Principal (Cerahite)
       main: "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/ywos3mcw8lwsv4aghdku.webp",
-      // Galería completa del modelo Cerahite/White
+      // Galera completa del modelo Cerahite/White
       gallery: [
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/ywos3mcw8lwsv4aghdku.webp", // Frontal
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401875/geekwave_catalog/l9roi8hkdwqztfbbdurm.webp", // Lateral
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401875/geekwave_catalog/nd9yy2izwhplgli7avxo.webp", // Posterior
         "https://res.cloudinary.com/dn8pns203/image/upload/v1777401876/geekwave_catalog/xejjdgcatgzvd9a7k2qp.webp"  // Superior
       ],
-      description: "Minimalismo técnico. La versión White destaca la pureza de la pantalla LCD de 615 ppi, manteniendo la misma arquitectura Altera Cyclone para una ejecución nativa sin precedentes.[cite: 2]"
+      description: "Minimalismo tcnico. La versin White destaca la pureza de la pantalla LCD de 615 ppi, manteniendo la misma arquitectura Altera Cyclone para una ejecucin nativa sin precedentes.[cite: 2]"
     }
   },
 
@@ -41,7 +41,7 @@ const productData = {
         "Cable USB-C de alta velocidad",
         "Protector de pantalla pre-instalado"
       ],
-      buttonText: "RESERVAR EDICIÓN BASE"
+      buttonText: "RESERVAR EDICIN BASE"
     },
     bundle: {
       price: "$299.99",
@@ -49,7 +49,7 @@ const productData = {
         "Consola Analogue Pocket[cite: 2]",
         "Analogue Dock (Salida HDMI 1080p)",
         "Hard Case de policarbonato",
-        "Envío prioritario Geekwave"
+        "Envo prioritario Geekwave"
       ],
       buttonText: "RESERVAR DELUXE BUNDLE"
     }
@@ -84,7 +84,7 @@ function renderSelectors() {
     flavorContainer.appendChild(button);
   });
 
-  // 2. Renderizar galería de miniaturas según el color seleccionado
+  // 2. Renderizar galera de miniaturas segn el color seleccionado
   currentFlavor.gallery.forEach((imgUrl) => {
     const thumb = document.createElement("div");
     thumb.className = `thumb ${mainImage.src === imgUrl ? "active" : ""}`;
@@ -158,13 +158,13 @@ document.querySelectorAll(".accordion-header").forEach(header => {
 });
 document.addEventListener("DOMContentLoaded", updateUI);
 
-// Función para deslizar hacia la zona de compra/reserva
+// Funcin para deslizar hacia la zona de compra/reserva
 function scrollToPurchase() {
     const detailsPanel = document.querySelector('.product-details');
     const purchaseBox = document.querySelector('.purchase-box');
     
     if (detailsPanel && purchaseBox) {
-        // Desliza el panel interno hacia la posición de la caja de compra
+        // Desliza el panel interno hacia la posicin de la caja de compra
         detailsPanel.scrollTo({
             top: purchaseBox.offsetTop - 20,
             behavior: 'smooth'
@@ -172,7 +172,7 @@ function scrollToPurchase() {
     }
 }
 
-// Actualiza tu función updateUI para incluir el scroll suave
+// Actualiza tu funcin updateUI para incluir el scroll suave
 function updateUI() {
     const flavor = productData.flavors[selectedFlavor];
     const mainImage = document.getElementById("mainProductImage");
@@ -191,7 +191,7 @@ function updateUI() {
     renderSelectors();
     renderPlanDetails();
     
-    // Opcional: Solo hace scroll si el usuario ya interactuó
+    // Opcional: Solo hace scroll si el usuario ya interactu
     // scrollToPurchase(); 
 }
 
@@ -204,27 +204,27 @@ document.querySelectorAll(".plan").forEach(planCard => {
     };
 });
 
-// En renderSelectors(), añade el scroll al evento click de los botones de chasis
+// En renderSelectors(), aade el scroll al evento click de los botones de chasis
 // Dentro de tu bucle de flavors:
 // button.onclick = () => { selectedFlavor = key; updateUI(); scrollToPurchase(); };
 
 
-// Captura la cantidad real del selector antes de añadir al carrito
+// Captura la cantidad real del selector antes de aadir al carrito
 function getSelectedQuantity() {
     const qtyElement = document.querySelector('.qty-num');
     return qtyElement ? parseInt(qtyElement.textContent) : 1;
 }
 
-// Función que debe llamar tu botón "Añadir al carrito"
+// Funcin que debe llamar tu botn "Aadir al carrito"
 function handleAddToCart() {
     const cantidad = getSelectedQuantity();
-    const productoId = "analogue-pocket"; // Asegúrate que sea el ID correcto
+    const productoId = "analogue-pocket"; // Asegrate que sea el ID correcto
     const nombre = "Analogue Pocket";
     
     // Llamamos al motor global que vive en navbar-global.js
     if (typeof window.addToCart === 'function') {
         window.addToCart(productoId, nombre, cantidad);
     } else {
-        console.error("addToCart no está definido");
+        console.error("addToCart no est definido");
     }
 }

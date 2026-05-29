@@ -726,6 +726,30 @@ window.removeFromCart = function (id) {
         currentFocus = -1;
     }
 
+// ===== MARCAR ENLACE ACTIVO DINÁMICAMENTE =====
+    const currentPath = window.location.pathname;
+    const allNavLinks = document.querySelectorAll('.nav-links > a, .nav-item-dropdown > a');
+
+    allNavLinks.forEach(link => {
+        link.classList.remove('active'); // Limpiamos todos primero
+        const href = link.getAttribute('href');
+        
+        if (!href || href === '#') return;
+
+        // Marcamos el correcto según la URL
+        if (currentPath.endsWith(href) || (currentPath.endsWith('/') && href === 'index.html')) {
+            link.classList.add('active');
+        }
+    });
+
+    // Caso especial para mantener "Productos" marcado si estás viendo productos
+    if (currentPath.includes('productos.html') || currentPath.includes('producto.html') || currentPath.includes('info.html')) {
+        const btnMenuProductos = document.getElementById('productosBtn');
+        if (btnMenuProductos) {
+            btnMenuProductos.classList.add('active');
+        }
+    }
+
     console.log(' Navbar completamente inicializado y listo');
 }
 // En pago.js (y en navbar-global.js)
@@ -762,3 +786,5 @@ window.addEventListener('storage', (e) => {
         if (typeof renderCart === 'function') renderCart();
     }
 });
+
+

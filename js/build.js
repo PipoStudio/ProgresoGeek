@@ -110,7 +110,7 @@ const cssContent = `
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg-main); color: var(--text-main); font-family: 'Manrope', sans-serif; overflow-x: hidden; }
 
-/* Navbar Glass[cite: 2] */
+/* Navbar Glass */
 .navbar { position: fixed; top: 0; width: 100%; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); z-index: 2000; border-bottom: 1px solid var(--border); }
 .nav-links a { font-family: var(--font-heading); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; margin-left: 2rem; color: var(--text-muted); text-decoration: none; }
 

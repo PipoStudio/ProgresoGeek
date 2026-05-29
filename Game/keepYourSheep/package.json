@@ -4,10 +4,10 @@
   "description": "An arcade game with symbol recognition.",
   "author": "Volodymyr Mikhav <mihaw.wolodymyr@gmail.com>",
   "main": "index.js",
-  "scripts": {
+ "scripts": {
     "dev": "webpack",
-    "prod": "webpack --config webpack.production.config.js",
-    "deploy": "npm run prod && node deploy.js",
+    "build": "webpack --config webpack.production.config.js",
+    "deploy": "npm run build && node deploy.js",
     "cordova": "webpack --config webpack.cordova.config.js"
   },
   "license": "MIT",

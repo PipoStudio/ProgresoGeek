@@ -2,7 +2,8 @@
   publish = "." 
   functions = "netlify/functions"
 
+
 [[redirects]]
   from = "/juego/*"
-  to = "/Game/keepYourSheep/:splat"
+  to = "/Game/keepYourSheep/build/:splat"
   status = 200

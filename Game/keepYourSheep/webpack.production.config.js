@@ -32,8 +32,6 @@ module.exports = {
       { from: 'assets', to: 'assets' },
       { from: 'src/manifest.json', to: './manifest.json' },
       { from: 'src/css', to: 'css' },
-      { from: 'index.html', to: 'index.html' },
-      { from: 'favicon.ico', to: 'favicon.ico' },
     ]),
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, 'build', 'index.html'),

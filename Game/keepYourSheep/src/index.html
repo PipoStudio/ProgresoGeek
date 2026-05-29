@@ -3,19 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Keep your sheep</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Geekwave | Geekzone</title>
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta http-equiv="cleartype" content="on">
     <meta name="theme-color" content="#ffffff">
+    
+    <link rel="icon" type="image/x-icon" href="/components/icono.ico">
+    
     <link rel="manifest" href="./manifest.json">
-
     <link rel="stylesheet" type="text/css" href="./css/index.css" charset="utf-8" />
+    
     <style>
-
-
-
         html,
         body {
             background-color: black;
@@ -56,41 +56,31 @@
             animation-delay: -0.15s;
         }
         @keyframes lds-ring {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-
     </style>
 </head>
-
-</div>
 
 <body>
     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
     
     <div class="game-layout">
+        
         <div id="content"></div>
         
         <aside class="sidebar-info">
-            <h3> Tu Racha</h3>
+            <h3>Tu Racha</h3>
             <div id="streak-counter">--</div>
             
             <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
             
-            <h3> Top Global</h3>
+            <h3>Top Global</h3>
             <ul id="global-rankings"></ul>
 
-            <a href="../../index.html" class="btn-return">Regresar a la tienda</a>
+            <a href="/" class="btn-return">Regresar a la tienda</a>
         </aside>
     </div>
     
-    <script src="vendor.bundle.js"></script>
-    <script src="bundle.js"></script>
-
-</body>
+    </body>
 </html>

@@ -75,7 +75,7 @@ function handleVerificationSuccess() {
     // EL CEREBRO DE REDIRECCIN: Busca si guardamos de dnde vena el usuario
     const returnUrl = localStorage.getItem('geekwave_redirect_url') || 'index.html';
     
-    // Limpiamos la memoria para evitar que se quede pegada en el prximo inicio
+    // Limpiamos la memoria para evitar que se quede pegada en el próximo inicio
     localStorage.removeItem('geekwave_redirect_url'); 
     
     // Enva al usuario exactamente de dnde vena (ej: pago.html) o al index por defecto

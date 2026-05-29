@@ -11,6 +11,12 @@ importers:
       axios:
         specifier: ^1.7.0
         version: 1.16.1
+      follow-redirects:
+        specifier: ^1.16.0
+        version: 1.16.0
+      form-data:
+        specifier: ^4.0.5
+        version: 4.0.5
       https-proxy-agent:
         specifier: ^9.0.0
         version: 9.0.0

@@ -1,4 +1,4 @@
-[build]
+netlify_toml = """[build]
   publish = "."
   functions = "netlify/functions"
 
@@ -37,3 +37,9 @@
   from = "/juego/service-worker.js"
   to = "/Game/keepYourSheep/build/service-worker.js"
   status = 200
+"""
+
+with open("netlify.toml", "w", encoding="utf-8") as f:
+    f.write(netlify_toml)
+
+print('✅ Archivo netlify.toml escrito con configuración segura para Phaser + Netlify.')

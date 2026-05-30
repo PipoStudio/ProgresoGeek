@@ -5,8 +5,29 @@
 [functions]
   node_bundler = "esbuild"
 
+# Manejo de assets del juego (NO con force=true)
 [[redirects]]
-  from = "/juego/*"
+  from = "/juego/assets/*"
+  to = "/Game/keepYourSheep/build/assets/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/juego/dist/*"
+  to = "/Game/keepYourSheep/build/dist/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/juego/css/*"
+  to = "/Game/keepYourSheep/build/css/:splat"
+  status = 200
+
+# Redirección de la página principal del juego (CON force=true solo aquí)
+[[redirects]]
+  from = "/juego"
   to = "/Game/keepYourSheep/build/index.html"
   status = 200
-  force = true
+
+[[redirects]]
+  from = "/juego/"
+  to = "/Game/keepYourSheep/build/index.html"
+  status = 200

@@ -24,10 +24,11 @@ module.exports = {
 
   },
   output: {
-    path: path.resolve(__dirname, 'www/dist'),
-    publicPath: './dist/',
-    filename: 'bundle.js'
-  },
+  pathinfo: true,
+  path: path.resolve(__dirname, 'build'),
+  publicPath: '/Game/keepYourSheep/build/',  // ← Ruta ABSOLUTA desde raíz
+  filename: 'dist/bundle.js'
+},
   plugins: [
     definePlugin,
     new CleanWebpackPlugin(['www']),

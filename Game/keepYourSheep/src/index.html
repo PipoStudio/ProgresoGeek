@@ -11,9 +11,12 @@
     <meta name="theme-color" content="#ffffff">
     
     <link rel="icon" href="/icono.ico" type="image/x-icon">
-    
-    <link rel="manifest" href="./manifest.json">
-    <link rel="stylesheet" type="text/css" href="./css/index.css" charset="utf-8" />
+
+    <!-- Usa rutas relativas para que Webpack las maneje -->
+<link rel="manifest" href="./manifest.json">
+<link rel="stylesheet" href="./css/index.css">
+
+<!-- Los scripts se inyectan automáticamente por HtmlWebpackPlugin -->
     
     <style>
         html,

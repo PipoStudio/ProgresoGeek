@@ -1,15 +1,12 @@
-  [build]
-  publish = "." 
+[build]
+  publish = "."
   functions = "netlify/functions"
 
 [functions]
   node_bundler = "esbuild"
 
-# Regla para redirigir el acceso al juego
 [[redirects]]
   from = "/juego/*"
-  to = "/Game/keepYourSheep/build/:splat"
+  to = "/Game/keepYourSheep/build/index.html"
   status = 200
-  force = true # Esto obliga a usar la redirección
-
-
+  force = true

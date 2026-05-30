@@ -13,12 +13,12 @@ module.exports = {
     vendor: ['phaser', 'webfontloader']
   },
   mode: 'development',
-  output: {
-    pathinfo: true,
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: './dist/',
-    filename: 'bundle.js'
-  },
+ output: {
+  pathinfo: true,
+  path: path.resolve(__dirname, 'build'),
+  publicPath: '/juego/',// <--- Cambia aquí
+  filename: 'dist/bundle.js'
+},
   watch: true,
   plugins: [
     new webpack.DefinePlugin({

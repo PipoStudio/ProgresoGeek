@@ -121,7 +121,6 @@ function generarCatalogo(productos) {
 }
 
 
-
 function activarFavoritos() {
 
     const favoritos =
@@ -195,6 +194,10 @@ function activarFavoritos() {
                         "geekwave_favorites",
                         JSON.stringify(lista)
                     );
+
+                    // [FIX] notify navbar/panel that favorites changed
+                    window.dispatchEvent(new CustomEvent('favoritesUpdated'));
+
 
                 }
             );
@@ -334,7 +337,6 @@ function activarObserver() {
         });
 
 }
-
 
 
 /**

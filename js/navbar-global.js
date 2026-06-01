@@ -634,25 +634,41 @@ window.removeFromCart = function (id) {
             if (matches.length > 0) {
                 matches.slice(0, 6).forEach(item => {
              const imgUrl = item.imagen_principal;
-                    const resultHtml = `
-                        <a href="producto.html?id=${item.id}" class="result-item" data-name="${item.nombre}">
-                            <img src="${imgUrl}" alt="${item.nombre}" class="result-img">
-                            <div class="result-info">
-                                <span class="result-title">${item.nombre} <span style="color: #00ff7f; font-size: 0.85em; margin-left: 8px;">$${item.precio_usd.toFixed(2)}</span></span>
-                                <span class="result-desc">${item.descripcion_tecnica}</span>
-                            </div>
-                            <div class="result-actions">
-                                <div class="qty-control" onclick="event.preventDefault(); event.stopPropagation();">
-                                    <button class="qty-btn minus" onclick="let el=this.nextElementSibling; el.textContent = Math.max(1, parseInt(el.textContent) - 1);">-</button>
-                                    <span class="qty-num">1</span>
-                                    <button class="qty-btn plus" onclick="let el=this.previousElementSibling; el.textContent = parseInt(el.textContent) + 1;">+</button>
-                                </div>
-                                <button class="add-cart-btn" title="Agregar al carrito" onclick="event.preventDefault(); event.stopPropagation(); window.addToCart(${item.id}, '${item.nombre.replace(/'/g, "\\'")}', this.previousElementSibling.querySelector('.qty-num').textContent);">
-                                    <i data-lucide="shopping-cart"></i>
-                                </button>
-                            </div>
-                        </a>
-                    `;
+                    const safeName = item.nombre.replace(/'/g, "&#39;");
+
+const resultHtml = `
+<a href="producto.html?id=${item.id}" class="result-item" data-name="${safeName}">
+    <img src="${imgUrl}" alt="${safeName}" class="result-img">
+
+    <div class="result-info">
+        <span class="result-title">
+            ${item.nombre}
+            <span style="color:#00ff7f; font-size:0.85em; margin-left:8px;">
+                $${item.precio_usd.toFixed(2)}
+            </span>
+        </span>
+        <span class="result-desc">${item.descripcion_tecnica}</span>
+    </div>
+
+    <div class="result-actions">
+        <div class="qty-control" onclick="event.preventDefault(); event.stopPropagation();">
+            <button class="qty-btn minus"
+                onclick="let el=this.nextElementSibling; el.textContent=Math.max(1,parseInt(el.textContent)-1);">-</button>
+
+            <span class="qty-num">1</span>
+
+            <button class="qty-btn plus"
+                onclick="let el=this.previousElementSibling; el.textContent=parseInt(el.textContent)+1;">+</button>
+        </div>
+
+        <button class="add-cart-btn"
+            title="Agregar al carrito"
+            onclick="event.preventDefault(); event.stopPropagation(); window.addToCart(${item.id}, '${safeName}', 1)">
+            <i data-lucide="shopping-cart"></i>
+        </button>
+    </div>
+</a>
+`;
                     if (searchResults) searchResults.insertAdjacentHTML('beforeend', resultHtml);
                 });
                 if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -722,7 +738,7 @@ window.removeFromCart = function (id) {
         currentFocus = -1;
     }
 
-// ===== MARCAR ENLACE ACTIVO DINÁMICAMENTE =====
+ // ===== MARCAR ENLACE ACTIVO DINÁMICAMENTE =====
     const currentPath = window.location.pathname;
     const allNavLinks = document.querySelectorAll('.nav-links > a, .nav-item-dropdown > a');
 
@@ -779,6 +795,9 @@ window.removeFromCart = function (id) {
                 "has-favorites"
             );
 
+                // [FIX] visualizar corazón activo (rojo) cuando hay favoritos
+                btn.classList.add('active');
+
             if (badge) {
 
                 badge.textContent =
@@ -794,6 +813,9 @@ window.removeFromCart = function (id) {
             btn.classList.remove(
                 "has-favorites"
             );
+
+                // [FIX] limpiar visual 'active' si no hay favoritos
+                btn.classList.remove('active');
 
             if (badge) {
 
@@ -866,19 +888,42 @@ window.removeFromCart = function (id) {
             `).join("");
     }
 
-    window.addEventListener(
-        "favoritesUpdated",
-        () => {
+    window.addEventListener('favoritesUpdated', () => {
 
+            // [FIX] Sólo actualizar contador/visual del navbar. No renderizar el panel aquí.
             updateFavoritesBadge();
-            renderFavorites();
 
-        }
-    );
+    // [FIX] Renderizar panel de favoritos SOLO al hacer click en el corazón del navbar
+    (function(){
+        const favBtn = document.getElementById('favoritesBtn');
+        if (!favBtn) return;
+        favBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            try {
+                if (typeof renderFavorites === 'function') renderFavorites();
+                // actualizar apariencia del botón localmente
+                const favs = JSON.parse(localStorage.getItem('geekwave_favorites')) || [];
+                if (favs.length > 0) favBtn.classList.add('active'); else favBtn.classList.remove('active');
+            } catch (err) { console.error('Error al renderizar favoritos al click:', err); }
+        });
+    })();
+
+
+        });
 
     updateFavoritesBadge();
 
 
 
-    console.log(' Navbar completamente inicializado y listo');
+    
+
+    // [FIX] Sincronizar conteo de favoritos entre pestañas (solo actualiza el badge)
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'geekwave_favorites') {
+            try {
+                updateFavoritesBadge();
+            } catch (err) { console.error('Favorites storage sync error', err); }
+        }
+    });
+console.log(' Navbar completamente inicializado y listo');
 }

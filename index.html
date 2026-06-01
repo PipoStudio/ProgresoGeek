@@ -7,6 +7,7 @@
     <title>Geekwave</title>
     
     <!-- Preload de recursos crticos -->
+      <link rel="stylesheet" href="css/modal.css">
     <link rel="preload" href="css/styles.css" as="style">
     
     <!-- Google Fonts -->
@@ -17,6 +18,8 @@
     <!-- Estilos -->
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.18/dist/lenis.css">
     <link rel="stylesheet" href="css/styles.css">
+   
+    
     
     <!-- Scripts externos con async (no bloquean renderizado) -->
     <script src="https://unpkg.com/lucide@latest" async></script>
@@ -313,6 +316,230 @@
 
 <div id="footer-placeholder"></div>
 
+
+
+
+
+
+
+<div id="welcome-modal-overlay" class="modal-overlay hidden">
+
+    <div id="welcome-modal" class="modal-content-large">
+
+        <!-- Botón cerrar -->
+        <button id="close-modal" class="close-btn-circle" aria-label="Cerrar">
+
+            <svg width="20" height="20" viewBox="0 0 20 20">
+                <line x1="2" y1="2" x2="18" y2="18" stroke="white" stroke-width="2"/>
+                <line x1="18" y1="2" x2="2" y2="18" stroke="white" stroke-width="2"/>
+            </svg>
+
+        </button>
+
+        <!-- ========================================= -->
+        <!-- COLUMNA IZQUIERDA / SLIDER -->
+        <!-- ========================================= -->
+
+        <div class="modal-image-container">
+
+            <div class="slider-wrapper">
+
+                <img
+                    src="https://res.cloudinary.com/dn8pns203/image/upload/v1777401901/geekwave_catalog/pgcad8wh4ba0g9se5dz2.webp"
+                    alt="Geekwave Hardware"
+                    class="slide active"
+                >
+
+                <img
+                    src="https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp"
+                    alt="Geekwave Retro Collection"
+                    class="slide"
+                >
+
+                <img
+                    src="https://res.cloudinary.com/dn8pns203/image/upload/v1777401873/geekwave_catalog/hkh80zcxx5hci35cxxhm.webp"
+                    alt="Geekwave Gaming Collection" class="slide">
+
+            </div>
+
+            <!-- Indicadores del slider -->
+            <div class="modal-slider-indicators">
+
+                <span class="modal-dot active"></span>
+                <span class="modal-dot"></span>
+                <span class="modal-dot"></span>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- COLUMNA DERECHA -->
+        <!-- ========================================= -->
+
+        <div class="modal-grid">
+
+            <!-- ===================================== -->
+            <!-- VISTA INVITADO -->
+            <!-- ===================================== -->
+
+            <div
+                id="guest-content"
+                class="modal-body-large"
+            >
+
+                <span class="modal-badge">
+                    ACCESO PRIORITARIO
+                </span>
+
+                <h2>
+                    ¡Empieza a descubrir! <br>
+                  
+                </h2>
+
+                <p class="modal-description">
+
+                    Descubre consolas, portátiles y hardware
+                    cuidadosamente restaurados.
+
+                    Suscríbete para recibir acceso anticipado a
+                    nuevas colecciones, preventas y descuentos
+                    exclusivos.
+
+                </p>
+
+                <form id="newsletter-form">
+
+                    <input
+                        type="email"
+                        id="newsletter-email"
+                        placeholder="Tu correo electrónico"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        id="subscribe-btn"
+                        class="btn-primary-large"
+                    >
+                        Suscribirme
+                    </button>
+
+                </form>
+
+                <a
+                    href="productos.html"
+                    class="link-secondary"
+                >
+                    Explorar catálogo →
+                </a>
+
+                <div class="modal-footer">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="no-show-again"
+                        >
+
+                        No volver a mostrar
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <!-- ===================================== -->
+            <!-- VISTA USUARIO LOGUEADO -->
+            <!-- ===================================== -->
+
+            <div
+                id="logged-content"
+                class="modal-body-large hidden"
+            >
+
+                <span class="modal-badge">
+                    BIENVENIDO DE NUEVO
+                </span>
+
+                <h2>
+                    Tus ofertas<br>
+                    te están esperando.
+                </h2>
+
+                <p class="modal-description">
+
+                    Accede a descuentos exclusivos,
+                    lanzamientos anticipados y promociones
+                    reservadas para miembros Geekwave.
+
+                </p>
+
+                <div class="logged-actions">
+
+                    <a
+                        href="ofertas.html"
+                        class="btn-primary-large btn-full"
+                    >
+                        Ir a mis ofertas
+                    </a>
+
+                    <a
+                        href="productos.html"
+                        class="link-secondary"
+                    >
+                        Seguir explorando →
+                    </a>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="no-show-again-logged"
+                        >
+
+                        No volver a mostrar
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- VISTA MINIMIZADA -->
+        <!-- ========================================= -->
+
+        <div
+            id="modal-minimized-view"
+            class="minimized-text hidden"
+        >
+
+            <div class="minimized-content">
+
+                <span class="minimized-label">
+                    OFERTAS EXCLUSIVAS
+                </span>
+
+                <strong>
+                    Ver novedades Geekwave
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <!-- ===== SCRIPTS EN ORDEN CORRECTO ===== -->
@@ -325,6 +552,7 @@
 <!-- 3 TERCERO: Scripts especficos de la pgina -->
 <script src="js/geekwave-main.js" defer></script>
 <script src="js/index.js" defer></script>
+<script src="js/modal.js" defer></script>
 
 </body>
 </html>

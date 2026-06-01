@@ -746,139 +746,154 @@ window.removeFromCart = function (id) {
         }
     }
 
+    console.log(' Navbar completamente inicializado y listo');
+}
+// En pago.js (y en navbar-global.js)
+function saveCart(cart) {
+    localStorage.setItem("geekwave_cart", JSON.stringify(cart));
     
+    // Lanzar evento global para que cualquier componente sepa que el carrito cambi
+    window.dispatchEvent(new CustomEvent('cartUpdated', { 
+        detail: { cart: cart } 
+    }));
+}
+// En navbar-global.js, dentro de initializeNavbarLogic:
+window.addEventListener('cartUpdated', (e) => {
+    console.log("Carrito actualizado, refrescando badge...");
+    updateCartBadge();
+});
 
-    // ==========================================
-    // FAVORITOS
-    // ==========================================
+// En tus funciones de guardado:
+function saveCart(cart) {
+    localStorage.setItem('geekwave_cart', JSON.stringify(cart));
+    
+    // Dispara esto para la misma pestaa
+    window.dispatchEvent(new CustomEvent('cartUpdated')); 
+}
 
-    function updateFavoritesBadge() {
+// Y agrega esto en ambos archivos:
+window.addEventListener('cartUpdated', () => {
+    if (typeof renderCheckoutCart === 'function') renderCheckoutCart();
+    if (typeof updateCartBadge === 'function') updateCartBadge();
+});
+window.addEventListener('storage', (e) => {
+    if (e.key === 'geekwave_cart') {
+        if (typeof updateCartBadge === 'function') updateCartBadge();
+        if (typeof renderCart === 'function') renderCart();
+    }
+});
 
-        const favorites =
-            JSON.parse(
-                localStorage.getItem(
-                    "geekwave_favorites"
-                )
-            ) || [];
 
-        const btn =
-            document.getElementById(
-                "favoritesBtn"
+function updateFavoritesBadge() {
+
+    const favorites =
+        JSON.parse(
+            localStorage.getItem(
+                "geekwave_favorites"
+            )
+        ) || [];
+
+    const btn =
+        document.getElementById(
+            "favoritesBtn"
+        );
+
+    const badge =
+        document.getElementById(
+            "favoritesBadge"
+        );
+
+    if (!btn) return;
+
+    if (favorites.length > 0) {
+
+        btn.classList.add(
+            "has-favorites"
+        );
+
+        if (badge) {
+
+            badge.textContent =
+                favorites.length;
+
+            badge.classList.add(
+                "show"
             );
+        }
 
-        const badge =
-            document.getElementById(
-                "favoritesBadge"
+    } else {
+
+        btn.classList.remove(
+            "has-favorites"
+        );
+
+        if (badge) {
+
+            badge.classList.remove(
+                "show"
             );
-
-        if (!btn) return;
-
-        if (favorites.length > 0) {
-
-            btn.classList.add(
-                "has-favorites"
-            );
-
-            if (badge) {
-
-                badge.textContent =
-                    favorites.length;
-
-                badge.classList.add(
-                    "show"
-                );
-            }
-
-        } else {
-
-            btn.classList.remove(
-                "has-favorites"
-            );
-
-            if (badge) {
-
-                badge.classList.remove(
-                    "show"
-                );
-            }
         }
     }
+}
 
-    function renderFavorites() {
+window.addEventListener(
+    "favoritesUpdated",
+    () => {
 
-        const favoritos =
-            JSON.parse(
-                localStorage.getItem(
-                    "geekwave_favorites"
+        updateFavoritesBadge();
+
+        renderFavorites();
+
+    }
+);
+
+function renderFavorites() {
+
+    const favoritos =
+        JSON.parse(
+            localStorage.getItem(
+                "geekwave_favorites"
+            )
+        ) || [];
+
+    const container =
+        document.getElementById(
+            "favoritesContainer"
+        );
+
+    if (!container) return;
+
+    const productos =
+        inventario.filter(
+            p =>
+                favoritos.includes(
+                    String(p.id)
                 )
-            ) || [];
+        );
 
-        const container =
-            document.getElementById(
-                "favoritesContainer"
-            );
+    container.innerHTML =
+        productos.map(prod => `
 
-        if (!container) return;
+            <a
+                href="info.html?id=${prod.id}"
+                class="favorite-item"
+            >
 
-        const productos =
-            inventario.filter(
-                p =>
-                    favoritos.includes(
-                        String(p.id)
-                    )
-            );
-
-        if (productos.length === 0) {
-
-            container.innerHTML = `
-                <div class="favorites-empty">
-                    No tienes favoritos aún
-                </div>
-            `;
-
-            return;
-        }
-
-        container.innerHTML =
-            productos.map(prod => `
-
-                <a
-                    href="info.html?id=${prod.id}"
-                    class="favorite-item"
+                <img
+                    src="${prod.imagen_principal}"
                 >
 
-                    <img
-                        src="${prod.imagen_principal}"
-                    >
+                <div>
 
-                    <div>
+                    <h4>${prod.nombre}</h4>
 
-                        <h4>${prod.nombre}</h4>
+                    <span>
+                        $${prod.precio_usd}
+                    </span>
 
-                        <span>
-                            $${prod.precio_usd}
-                        </span>
+                </div>
 
-                    </div>
+            </a>
 
-                </a>
-
-            `).join("");
-    }
-
-    window.addEventListener(
-        "favoritesUpdated",
-        () => {
-
-            updateFavoritesBadge();
-            renderFavorites();
-
-        }
-    );
-
-    updateFavoritesBadge();
-
-
-
-    console.log(' Navbar completamente inicializado y listo');
+        `).join("");
 }

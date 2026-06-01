@@ -186,11 +186,7 @@ window.removeFromCart = function (id) {
                 cartItemsContainer.innerHTML = cart
                     .map(item => {
                         const fullItem = inventario.find(i => parseInt(i.id) === parseInt(item.id));
-                        const imgUrl =
-                            fullItem && fullItem.imagen
-                                ? fullItem.imagen
-                                : 'https://res.cloudinary.com/dn8pns203/image/upload/v1776342565/smilling_friends_dgrpym.webp';
-
+                     const imgUrl = fullItem.imagen_principal;
                         return `
                     <div class="cart-item">
                         <img src="${imgUrl}" alt="${item.nombre}" class="cart-item-img">
@@ -637,7 +633,7 @@ window.removeFromCart = function (id) {
 
             if (matches.length > 0) {
                 matches.slice(0, 6).forEach(item => {
-                    const imgUrl = item.imagen || 'https://res.cloudinary.com/dn8pns203/image/upload/v1776342565/smilling_friends_dgrpym.webp';
+             const imgUrl = item.imagen_principal;
                     const resultHtml = `
                         <a href="producto.html?id=${item.id}" class="result-item" data-name="${item.nombre}">
                             <img src="${imgUrl}" alt="${item.nombre}" class="result-img">
@@ -788,3 +784,116 @@ window.addEventListener('storage', (e) => {
 });
 
 
+function updateFavoritesBadge() {
+
+    const favorites =
+        JSON.parse(
+            localStorage.getItem(
+                "geekwave_favorites"
+            )
+        ) || [];
+
+    const btn =
+        document.getElementById(
+            "favoritesBtn"
+        );
+
+    const badge =
+        document.getElementById(
+            "favoritesBadge"
+        );
+
+    if (!btn) return;
+
+    if (favorites.length > 0) {
+
+        btn.classList.add(
+            "has-favorites"
+        );
+
+        if (badge) {
+
+            badge.textContent =
+                favorites.length;
+
+            badge.classList.add(
+                "show"
+            );
+        }
+
+    } else {
+
+        btn.classList.remove(
+            "has-favorites"
+        );
+
+        if (badge) {
+
+            badge.classList.remove(
+                "show"
+            );
+        }
+    }
+}
+
+window.addEventListener(
+    "favoritesUpdated",
+    () => {
+
+        updateFavoritesBadge();
+
+        renderFavorites();
+
+    }
+);
+
+function renderFavorites() {
+
+    const favoritos =
+        JSON.parse(
+            localStorage.getItem(
+                "geekwave_favorites"
+            )
+        ) || [];
+
+    const container =
+        document.getElementById(
+            "favoritesContainer"
+        );
+
+    if (!container) return;
+
+    const productos =
+        inventario.filter(
+            p =>
+                favoritos.includes(
+                    String(p.id)
+                )
+        );
+
+    container.innerHTML =
+        productos.map(prod => `
+
+            <a
+                href="info.html?id=${prod.id}"
+                class="favorite-item"
+            >
+
+                <img
+                    src="${prod.imagen_principal}"
+                >
+
+                <div>
+
+                    <h4>${prod.nombre}</h4>
+
+                    <span>
+                        $${prod.precio_usd}
+                    </span>
+
+                </div>
+
+            </a>
+
+        `).join("");
+}

@@ -1,230 +1,496 @@
 /* =========================================
-   LGICA DE DETALLES: ANALOGUE POCKET (RECURSOS CDN)
+   GEEKWAVE PRODUCT DETAIL
    ========================================= */
 
 const productData = {
-  flavors: {
-    black: {
-      name: "Chasis Black",
-      icon: "",
-      // Imagen Frontal Principal
-      main: "https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp",
-      // Galera completa del modelo Black
-      gallery: [
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp", // Frontal
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401873/geekwave_catalog/hkh80zcxx5hci35cxxhm.webp", // Posterior
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/cq6hbuxovqkfm3zuwnfn.webp"  // Superior
-      ],
-      description: "El estndar de ingeniera. Un acabado negro mate texturizado que evoca la esttica clsica, albergando el sistema FPGA dual capaz de replicar ciclos de hardware con precisin absoluta."
-    },
-    white: {
-      name: "Chasis White",
-      icon: "",
-      // Imagen Frontal Principal (Cerahite)
-      main: "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/ywos3mcw8lwsv4aghdku.webp",
-      // Galera completa del modelo Cerahite/White
-      gallery: [
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/ywos3mcw8lwsv4aghdku.webp", // Frontal
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401875/geekwave_catalog/l9roi8hkdwqztfbbdurm.webp", // Lateral
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401875/geekwave_catalog/nd9yy2izwhplgli7avxo.webp", // Posterior
-        "https://res.cloudinary.com/dn8pns203/image/upload/v1777401876/geekwave_catalog/xejjdgcatgzvd9a7k2qp.webp"  // Superior
-      ],
-      description: "Minimalismo tcnico. La versin White destaca la pureza de la pantalla LCD de 615 ppi, manteniendo la misma arquitectura Altera Cyclone para una ejecucin nativa sin precedentes.[cite: 2]"
-    }
-  },
+    flavors: {
+        black: {
+            name: "Chasis Black",
+            icon: "",
+            main: "https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp",
+            gallery: [
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401872/geekwave_catalog/vybuwhqgbpi4hi4nxom4.webp",
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401873/geekwave_catalog/hkh80zcxx5hci35cxxhm.webp",
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/cq6hbuxovqkfm3zuwnfn.webp"
+            ],
+            description:
+                "El estándar de ingeniería. Un acabado negro mate texturizado que evoca la estética clásica."
+        },
 
-  plans: {
-    standard: {
-      price: "$219.99",
-      benefits: [
-        "Consola Analogue Pocket Original[cite: 2]",
-        "Cable USB-C de alta velocidad",
-        "Protector de pantalla pre-instalado"
-      ],
-      buttonText: "RESERVAR EDICIN BASE"
+        white: {
+            name: "Chasis White",
+            icon: "",
+            main: "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/ywos3mcw8lwsv4aghdku.webp",
+            gallery: [
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401874/geekwave_catalog/ywos3mcw8lwsv4aghdku.webp",
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401875/geekwave_catalog/l9roi8hkdwqztfbbdurm.webp",
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401875/geekwave_catalog/nd9yy2izwhplgli7avxo.webp",
+                "https://res.cloudinary.com/dn8pns203/image/upload/v1777401876/geekwave_catalog/xejjdgcatgzvd9a7k2qp.webp"
+            ],
+            description:
+                "Minimalismo técnico. La versión White destaca la pureza visual del sistema."
+        }
     },
-    bundle: {
-      price: "$299.99",
-      benefits: [
-        "Consola Analogue Pocket[cite: 2]",
-        "Analogue Dock (Salida HDMI 1080p)",
-        "Hard Case de policarbonato",
-        "Envo prioritario Geekwave"
-      ],
-      buttonText: "RESERVAR DELUXE BUNDLE"
+
+    plans: {
+        standard: {
+            buttonText: "RESERVAR EDICIÓN BASE",
+            benefits: [
+                "Consola Analogue Pocket Original",
+                "Cable USB-C",
+                "Protector de pantalla"
+            ]
+        },
+
+        bundle: {
+            buttonText: "RESERVAR DELUXE BUNDLE",
+            benefits: [
+                "Consola Analogue Pocket",
+                "Analogue Dock",
+                "Hard Case",
+                "Envío prioritario"
+            ]
+        }
     }
-  }
 };
 
 let selectedFlavor = "black";
 let selectedPlan = "standard";
 let quantity = 1;
+let productoActual = null;
+
+/* =========================================
+   GALLERY + FLAVORS
+   ========================================= */
 
 function renderSelectors() {
-  const flavorContainer = document.getElementById("flavorContainer");
-  const galleryThumbs = document.getElementById("galleryThumbs");
-  const mainImage = document.getElementById("mainProductImage");
 
-  if (!flavorContainer || !galleryThumbs) return;
+    const flavorContainer =
+        document.getElementById("flavorContainer");
 
-  flavorContainer.innerHTML = "";
-  galleryThumbs.innerHTML = "";
+    const galleryThumbs =
+        document.getElementById("galleryThumbs");
 
-  const currentFlavor = productData.flavors[selectedFlavor];
+    const mainImage =
+        document.getElementById("mainProductImage");
 
-  // 1. Renderizar selectores de color (Chasis)
-  Object.entries(productData.flavors).forEach(([key, flavor]) => {
-    const button = document.createElement("button");
-    button.className = `flavor-btn ${selectedFlavor === key ? "active" : ""}`;
-    button.innerHTML = `<span>${flavor.icon} ${flavor.name}</span>`;
-    button.onclick = () => { 
-      selectedFlavor = key; 
-      updateUI(); 
-    };
-    flavorContainer.appendChild(button);
-  });
+    if (!flavorContainer || !galleryThumbs || !mainImage)
+        return;
 
-  // 2. Renderizar galera de miniaturas segn el color seleccionado
-  currentFlavor.gallery.forEach((imgUrl) => {
-    const thumb = document.createElement("div");
-    thumb.className = `thumb ${mainImage.src === imgUrl ? "active" : ""}`;
-    thumb.innerHTML = `<img src="${imgUrl}" alt="Vista de la consola">`;
-    thumb.onclick = () => {
-      mainImage.src = imgUrl; // Cambia la imagen principal al hacer clic en la miniatura
-      document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
-    };
-    galleryThumbs.appendChild(thumb);
-  });
-}
+    flavorContainer.innerHTML = "";
+    galleryThumbs.innerHTML = "";
 
-function updateUI() {
-  const flavor = productData.flavors[selectedFlavor];
-  const mainImage = document.getElementById("mainProductImage");
-  const description = document.getElementById("productDescription");
+    const currentFlavor =
+        productData.flavors[selectedFlavor];
 
-  if (mainImage) mainImage.src = flavor.main; // Al cambiar de color, vuelve a la vista frontal
-  if (description) description.textContent = flavor.description;
+    Object.entries(productData.flavors)
+        .forEach(([key, flavor]) => {
 
-  renderSelectors();
-  renderPlanDetails();
-}
+            const button =
+                document.createElement("button");
 
-// Reutilizamos el resto de funciones (renderPlanDetails, quantity logic, accordions) del script anterior[cite: 3]
-function renderPlanDetails() {
-  const currentPlan = productData.plans[selectedPlan];
-  const benefitsList = document.getElementById("benefitsList");
-  const cartButton = document.getElementById("cartButton");
+            button.className =
+                `flavor-btn ${
+                    selectedFlavor === key
+                        ? "active"
+                        : ""
+                }`;
 
-  if (benefitsList) {
-    benefitsList.innerHTML = currentPlan.benefits
-      .map(b => `<li><i class="fa-solid fa-circle-check"></i> ${b}</li>`)
-      .join("");
-  }
-  if (cartButton) {
-    cartButton.innerHTML = `${currentPlan.buttonText} <i class="fa-solid fa-chevron-right"></i>`;
-  }
-}
+            button.innerHTML =
+                `<span>${flavor.name}</span>`;
 
-document.querySelectorAll(".plan").forEach(planCard => {
-  planCard.onclick = () => {
-    selectedPlan = planCard.dataset.plan;
-    document.querySelectorAll(".plan").forEach(p => p.classList.remove("active"));
-    planCard.classList.add("active");
-    updateUI();
-  };
-});
+            button.addEventListener("click", () => {
 
-document.getElementById("increaseQty").onclick = () => {
-  quantity++;
-  document.getElementById("quantityValue").textContent = quantity;
-};
+                selectedFlavor = key;
 
-document.getElementById("decreaseQty").onclick = () => {
-  if (quantity > 1) {
-    quantity--;
-    document.getElementById("quantityValue").textContent = quantity;
-  }
-};
-document.querySelectorAll(".accordion-header").forEach(header => {
-  header.addEventListener("click", () => {
-    const item = header.parentElement;
-    item.classList.toggle("active");
+                updateUI();
 
-    const icon = header.querySelector("i");
-    icon.classList.toggle("fa-plus");
-    icon.classList.toggle("fa-minus");
-  });
-});
-document.addEventListener("DOMContentLoaded", updateUI);
+            });
 
-// Funcin para deslizar hacia la zona de compra/reserva
-function scrollToPurchase() {
-    const detailsPanel = document.querySelector('.product-details');
-    const purchaseBox = document.querySelector('.purchase-box');
-    
-    if (detailsPanel && purchaseBox) {
-        // Desliza el panel interno hacia la posicin de la caja de compra
-        detailsPanel.scrollTo({
-            top: purchaseBox.offsetTop - 20,
-            behavior: 'smooth'
+            flavorContainer.appendChild(button);
+
         });
-    }
+
+    currentFlavor.gallery.forEach((imgUrl, index) => {
+
+        const thumb =
+            document.createElement("div");
+
+        thumb.className =
+            `thumb ${index === 0 ? "active" : ""}`;
+
+        thumb.innerHTML =
+            `<img src="${imgUrl}" alt="">`;
+
+        thumb.addEventListener("click", () => {
+
+            mainImage.src = imgUrl;
+
+            document
+                .querySelectorAll(".thumb")
+                .forEach(t =>
+                    t.classList.remove("active")
+                );
+
+            thumb.classList.add("active");
+
+        });
+
+        galleryThumbs.appendChild(thumb);
+
+    });
+
 }
 
-// Actualiza tu funcin updateUI para incluir el scroll suave
-function updateUI() {
-    const flavor = productData.flavors[selectedFlavor];
-    const mainImage = document.getElementById("mainProductImage");
-    const description = document.getElementById("productDescription");
+/* =========================================
+   PLAN DETAILS
+   ========================================= */
 
-    if (mainImage) mainImage.src = flavor.main;
+function renderPlanDetails() {
+
+    const plan =
+        productData.plans[selectedPlan];
+
+    const benefitsList =
+        document.getElementById("benefitsList");
+
+    const cartButton =
+        document.getElementById("cartButton");
+
+    if (benefitsList) {
+
+        benefitsList.innerHTML =
+            plan.benefits
+                .map(item => `
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        ${item}
+                    </li>
+                `)
+                .join("");
+
+    }
+
+    if (cartButton) {
+
+        cartButton.innerHTML = `
+            ${plan.buttonText}
+            <i class="fa-solid fa-chevron-right"></i>
+        `;
+
+    }
+
+}
+
+/* =========================================
+   MAIN UI UPDATE
+   ========================================= */
+
+function updateUI() {
+
+    const flavor =
+        productData.flavors[selectedFlavor];
+
+    const mainImage =
+        document.getElementById("mainProductImage");
+
+    const description =
+        document.getElementById("productDescription");
+
+    if (mainImage) {
+
+        mainImage.src = flavor.main;
+
+    }
+
     if (description) {
-        // Efecto visual de desvanecimiento antes de cambiar el texto
+
         description.style.opacity = 0;
+
         setTimeout(() => {
-            description.textContent = flavor.description;
+
+            description.textContent =
+                flavor.description;
+
             description.style.opacity = 1;
-        }, 200);
+
+        }, 150);
+
     }
 
     renderSelectors();
     renderPlanDetails();
-    
-    // Opcional: Solo hace scroll si el usuario ya interactu
-    // scrollToPurchase(); 
+
 }
 
-// Vincula el scroll a los selectores de chasis y planes
-document.querySelectorAll(".plan").forEach(planCard => {
-    const originalClick = planCard.onclick;
-    planCard.onclick = (e) => {
-        if (originalClick) originalClick(e);
-        scrollToPurchase();
-    };
-});
+/* =========================================
+   QUANTITY
+   ========================================= */
 
-// En renderSelectors(), aade el scroll al evento click de los botones de chasis
-// Dentro de tu bucle de flavors:
-// button.onclick = () => { selectedFlavor = key; updateUI(); scrollToPurchase(); };
+function setupQuantityControls() {
 
+    const increaseBtn =
+        document.getElementById("increaseQty");
 
-// Captura la cantidad real del selector antes de aadir al carrito
-function getSelectedQuantity() {
-    const qtyElement = document.querySelector('.qty-num');
-    return qtyElement ? parseInt(qtyElement.textContent) : 1;
+    const decreaseBtn =
+        document.getElementById("decreaseQty");
+
+    const quantityValue =
+        document.getElementById("quantityValue");
+
+    if (!increaseBtn || !decreaseBtn || !quantityValue)
+        return;
+
+    increaseBtn.addEventListener("click", () => {
+
+        quantity++;
+
+        quantityValue.textContent =
+            quantity;
+
+    });
+
+    decreaseBtn.addEventListener("click", () => {
+
+        if (quantity > 1) {
+
+            quantity--;
+
+            quantityValue.textContent =
+                quantity;
+
+        }
+
+    });
+
 }
 
-// Funcin que debe llamar tu botn "Aadir al carrito"
-function handleAddToCart() {
-    const cantidad = getSelectedQuantity();
-    const productoId = "analogue-pocket"; // Asegrate que sea el ID correcto
-    const nombre = "Analogue Pocket";
-    
-    // Llamamos al motor global que vive en navbar-global.js
-    if (typeof window.addToCart === 'function') {
-        window.addToCart(productoId, nombre, cantidad);
-    } else {
-        console.error("addToCart no est definido");
+/* =========================================
+   PLAN SELECTORS
+   ========================================= */
+
+function setupPlanSelectors() {
+
+    document
+        .querySelectorAll(".config-option")
+        .forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                document
+                    .querySelectorAll(".config-option")
+                    .forEach(b =>
+                        b.classList.remove("active")
+                    );
+
+                btn.classList.add("active");
+
+                selectedPlan =
+                    btn.dataset.plan;
+
+                renderPlanDetails();
+
+            });
+
+        });
+
+}
+
+/* =========================================
+   ACCORDIONS
+   ========================================= */
+
+function setupAccordions() {
+
+    document
+        .querySelectorAll(".accordion-header")
+        .forEach(header => {
+
+            header.addEventListener(
+                "click",
+                () => {
+
+                    const item =
+                        header.parentElement;
+
+                    item.classList.toggle("active");
+
+                    const icon =
+                        header.querySelector("i");
+
+                    if (icon) {
+
+                        icon.classList.toggle("fa-plus");
+                        icon.classList.toggle("fa-minus");
+
+                    }
+
+                }
+            );
+
+        });
+
+}
+
+/* =========================================
+   LOAD PRODUCT
+   ========================================= */
+
+async function loadProduct() {
+
+    try {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const productId =
+            params.get("id");
+
+        if (!productId)
+            return;
+
+        const response =
+            await fetch(
+                "json/inventario.json"
+            );
+
+        const inventario =
+            await response.json();
+
+        const producto =
+            inventario.find(
+                p =>
+                    String(p.id) ===
+                    String(productId)
+            );
+
+        if (!producto)
+            return;
+
+        productoActual = producto;
+
+        const title =
+            document.getElementById(
+                "productTitle"
+            );
+
+        if (title) {
+
+            title.textContent =
+                producto.nombre;
+
+        }
+
+        const desc =
+            document.getElementById(
+                "productDescription"
+            );
+
+        if (desc &&
+            producto.descripcion_tecnica) {
+
+            desc.textContent =
+                producto.descripcion_tecnica;
+
+        }
+
+        const basePrice =
+            document.getElementById(
+                "basePrice"
+            );
+
+        if (basePrice) {
+
+            basePrice.textContent =
+                `$${producto.precio_usd}`;
+
+        }
+
+        const bundlePrice =
+            document.getElementById(
+                "bundlePrice"
+            );
+
+        if (bundlePrice) {
+
+            bundlePrice.textContent =
+                `$${(
+                    Number(producto.precio_usd) + 50
+                ).toFixed(2)}`;
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error cargando producto:",
+            error
+        );
+
     }
+
 }
+
+/* =========================================
+   CART
+   ========================================= */
+
+function setupCartButton() {
+
+    const cartButton =
+        document.getElementById(
+            "cartButton"
+        );
+
+    if (!cartButton)
+        return;
+
+    cartButton.addEventListener(
+        "click",
+        () => {
+
+            if (!productoActual)
+                return;
+
+            if (
+                typeof window.addToCart ===
+                "function"
+            ) {
+
+                window.addToCart(
+                    productoActual.id,
+                    productoActual.nombre,
+                    quantity
+                );
+
+            }
+
+        }
+    );
+
+}
+
+/* =========================================
+   INIT
+   ========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        setupQuantityControls();
+
+        setupPlanSelectors();
+
+        setupAccordions();
+
+        setupCartButton();
+
+        await loadProduct();
+
+        updateUI();
+
+    }
+);

@@ -1596,6 +1596,53 @@ button {
     font-size: 0.9rem; 
     text-align: center;
 }
+#colorOptions{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    flex-wrap:wrap;
+}
 
-.icon-sm { width: 14px; vertical-align: middle; }
+.color-btn{
+    width:38px;
+    height:38px;
+    padding:0;
 
+    border:none;
+    background:none;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+}
+
+.color-btn .swatch{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+
+    border:2px solid rgba(255,255,255,.15);
+
+    transition:.2s ease;
+}
+
+.color-btn.active .swatch{
+    transform:scale(1.12);
+
+    border-color:white;
+
+    box-shadow:
+        0 0 0 2px #111,
+        0 0 0 4px var(--chip-color);
+}
+
+/* ocultamos el texto dentro del botón */
+
+.color-btn .color-label,
+.color-btn .meta{
+    display:none;
+}
